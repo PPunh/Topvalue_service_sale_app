@@ -1,0 +1,70 @@
+Purpose
+----------------
+This docker-compose.yml file orchestrates the services required for a Django web application,
+including a PostgreSQL database, a Memcached caching server, the Django application itself,
+and a pgAdmin interface for database management.
+
+Context
+----------------
+This file is designed to be used in conjunction with
+- docker-compose.db.yml
+- docker-compose.memcached.yml
+- docker-compose.pgadmin.yml
+- docker-compose.django.yml
+to create a multi-container Docker environment. It facilitates the development and deployment
+of a Django application with its necessary dependencies.
+
+
+version: "3.9"
+--------------------------------
+the Docker Compose file format version.
+
+volumes:
+- postgres_data:
+- pgadmin_data:
+--------------------------------
+Defines named volumes postgres_data for storing PostgreSQL data, and pgadmin_data for pgAdmin4 data
+
+networks:
+- internal-network:
+--------------------------------
+Defines a custom network name "internal-network" for inter-container communication.
+
+services:
+--------------------------------
+Define docker services
+
+postgres:
+    extends:
+        file: docker-compose.db.yml
+        service: postgres
+--------------------------------
+Extends the postgres service using info defined in docker-compose.db.yml file
+
+memcached:
+    extends:
+        file: docker-compose.memcached.yml
+        service: memcached
+--------------------------------
+Extends the memcached service using info defined in docker-compose.memcached.yml file
+
+django-app:
+    extends:
+        file: docker-compose.django.yml
+        service: django-app
+    depends_on:
+        - postgres
+        - memcached
+--------------------------------
+Extends the django-app service using info defined in docker-compose.django.yml file
+and wait for postgres, and memcached services to start first
+
+pgadmin:
+    extends:
+        file: docker-compose.pgadmin.yml
+        service: pgadmin
+    depends_on:
+        - postgres
+--------------------------------
+Extends the pgadmin service using info defined in docker-compose.pgadmin.yml file
+and wait for postgres service to start first

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block main-content %}
+    <div class="w3-container" style="margin-top: 100px;">
+       <div class="w3-container w3-animate-left">
+            <h1 class="lao-noto">ຫນ້າຫລັກ ລາຍການໃບສະເຫນີລາຄາ</h1>
+            <table class="w3-table w3-hoverable w3-striped w3-bordered">
+                <thead>
+                    <tr>
+                        <th class="w3-blue w3-padding">ລຳດັບ</th>
+                        <th class="w3-blue w3-padding">ເລກທີໃບສະເຫນີລາຄາ</th>
+                        <th class="w3-blue w3-padding">ບໍລະສັດ</th>
+                        <th class="w3-blue w3-padding">ສິນຄ້າ</th>
+                        <th class="w3-blue w3-padding">ລາຄາ</th>
+                        <th class="w3-blue w3-padding">ຈຳນວນ</th>
+                        <th class="w3-blue w3-padding">ໄລຍະເວລາ</th>
+                        <th class="w3-blue w3-padding">ລວມ</th>
+                        <th class="w3-blue w3-padding">ລວມທັ່ງຫມົດ</th>
+                        <th class="w3-blue w3-padding">ວັນຫມົດອາຍຸ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quo in quotations %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{ quo.quotation_number }}</td>
+                        <td>{{ quo.customer.company_name }}</td>
+                        <td>{{ quo.product_name }}</td>
+                        <td>{{ quo.qty }}</td>
+                        <td>{{ quo.price }}</td>
+                        <td>{{ quo.period }}</td>
+                        <td>{{ quo.total_one_product }}</td>
+                        <td>
+                            {% if quo.additional_expenses %}
+                                {{ quo.additional_expenses.vat }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{quo.expired_at|date:'d/m/Y'}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+{% endblock %}

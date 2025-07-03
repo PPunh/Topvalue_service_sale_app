@@ -1,0 +1,16 @@
+[flake8]
+exclude =
+    migrations,
+    __pycache__,
+    manage.py,
+    settings.py,
+    configs/settings.py,
+    ./configs/settings.py,
+    configs/settings-dev.py,
+    ./configs/settings-dev.py,
+
+# exclude the import but unused check
+ignore = F401
+
+# increase the maximum line length in Flake8 to 120 characters
+max-line-length = 120

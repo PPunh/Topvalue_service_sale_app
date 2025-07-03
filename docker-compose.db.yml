@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-bookworm # use postgres 16 on Debian 12
+    container_name: postgres
+    environment:
+      POSTGRES_USER: db_user_100
+      POSTGRES_PASSWORD: db_password_100_example!!!
+      POSTGRES_DB: db_name_100
+      TZ: Asia/Vientiane # set default env time zone to UTC +7
+      PGTZ: Asia/Vientiane # set postgres time zone to UTC +7
+    volumes:
+#      - postgres_data:/var/lib/postgresql/data # Persist data (important!)
+      - ./db/postgres_data:/var/lib/postgresql/data
+    restart: always # Restart the database if it crashes
+    networks:  # Add the database to the inter-container network
+      - internal-network

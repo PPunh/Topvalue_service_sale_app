@@ -1,0 +1,35 @@
+Purpose
+--------------------------------
+This docker-compose.memcached.yml file defines the Memcached service for caching data in the Django application.
+
+Context
+--------------------------------
+This file is part of a multi-container Docker Compose setup, used in conjunction with other Compose files
+- docker-compose.yml
+- docker-compose.db.yml
+- docker-compose.pgadmin.yml
+- docker-compose.django.yml
+
+
+version: "3.9"
+--------------------------------
+the Docker Compose file format version.
+
+services:
+  memcached:
+    image: memcached:1.6-bookworm
+--------------------------------
+The Docker image to use for the Memcached service. It uses the official Memcached 1.6 image based on Debian 12 (bookworm).
+
+container_name: memcached
+--------------------------------
+Assigns the container the name to memcached.
+
+command: memcached -m 512
+--------------------------------
+Set the cache size to 512MB.
+
+networks:
+- internal-network
+--------------------------------
+Adds the container to the inter-container network name "internal-network".

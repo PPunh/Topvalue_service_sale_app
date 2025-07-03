@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block main-content %}
+
+{% if message %}
+    <div class="w3-panel w3-center w3-green w3-margin-bottom">
+      <h3>{{ message }}</h3>
+    </div>
+{% endif %}
+
+
+<div class="w3-card-4 w3-center w3-round-large w3-margin-bottom">
+    <form action="." method="post" class="w3-container">
+        {% csrf_token %}
+
+        {% include "snippets/form_generic.html" with form=form %} <br>
+
+        <button class="w3-button w3-round-xlarge w3-block w3-margin-top w3-black" type="submit">Register</button>
+        <a href='{% url 'core:login' %}' class="w3-button w3-round-xlarge w3-block w3-margin-top w3-gray w3-margin-bottom">Back</a>
+    </form>
+</div>
+
+{% endblock %}

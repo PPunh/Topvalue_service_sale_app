@@ -1,0 +1,66 @@
+Common operation commands
+-----------------------------
+
+sudo docker-compose build
+# build or rebuild the images for all services defined in a docker-compose.yml file in one go
+
+sudo docker build .
+# build a single Docker image from the Dockerfile in the current dir
+
+sudo docker-compose up
+sudo docker-compose up -d
+# -d: for detach mode, running in the background
+
+sudo docker-compose down
+
+sudo chown -R 999:999 /db/postgres_data
+# change ownership of /db/postgres_data dir postgres so that the postfres container can access the dir
+
+sudo usermod -aG docker $USER
+# add ourself to docker group so that we can also access to /db/postgres_data dir in the host
+
+# sudo docker-compose down --volumes
+# --volumes: named volumes is deleted and data will be lost, BE CAREFUL !!!
+# but this command will not effect mount volume on the host file system
+
+sudo docker ps
+# list running containers
+
+
+sudo docker-compose run --rm django-app sh -c "python3 manage.py createsuperuser"
+# --rm: automatically remove the container after the command has finished executing
+# django-app: name of the service defined in your docker-compose.yml
+# sh: invokes the shell (usually Bash)
+# -c: tells the shell to execute the command as a string
+
+
+Other basic commands
+-------------------------------
+
+sudo docker-compose run --rm django-app sh -c "python3 manage.py runserver 0.0.0.0:8000"
+sudo docker-compose run --rm django-app sh -c "python3 manage.py runserver 0.0.0.0:8000 --settings=settings-dev"
+
+sudo docker-compose run --rm django-app sh -c "django-admin startproject configs ."
+sudo docker-compose run --rm django-app sh -c "flake8"
+sudo docker-compose run --rm django-app sh -c "python3 manage.py startapp custom_apps.app_boilerplate_xxx"
+
+sudo docker-compose run --rm django-app sh -c "python3 manage.py makemigrations"
+sudo docker-compose run --rm django-app sh -c "python3 manage.py migrate"
+
+sudo docker-compose run --rm django-app sh -c "python3 manage.py collectstatic --noinput"
+
+sudo docker-compose run --rm django-app sh -c "python3 manage.py shell"
+
+sudo docker-compose -f docker-compose-prod.yml up -d
+sudo docker-compose -f docker-compose-dev.yml up
+# -f: to run specific compose file instead of default docker-compose.yml
+
+sudo docker-compose -f docker-compose.djangp.yml run --rm django-app sh -c "python3 manage.py makemigrations"
+
+
+git common commands
+------------------------------
+
+git add .
+git commit -am "xxx"
+git push your_branch # use origin to push to main branch

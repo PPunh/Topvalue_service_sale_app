@@ -1,0 +1,110 @@
+Purpose
+--------------------------------
+This docker-compose.django.yml file defines the Django service, tt configures the Django container
+including build context, environment variables, volumes, and startup commands.
+
+Context
+--------------------------------
+This file is part of a multi-container Docker Compose setup and is used in conjunction with other Compose
+files:
+- docker-compose.db.yml
+- docker-compose.memcached.yml
+- docker-compose.pgadmin.yml
+- docker-compose.yml
+
+
+version: "3.9"
+--------------------------------
+the Docker Compose file format version.
+
+services:
+    django-app:
+        build:
+            context: .
+--------------------------------
+Build docker container using the custom Dockerfile in the current directory, the "." means current directory.
+
+container_name: django-app
+--------------------------------
+Assigns the container name to django-app.
+
+ports:
+- "8000:8000"
+--------------------------------
+Maps port 8000 on the host to port 8000 in the container.
+
+environment:
+- POSTGRES_HOST=postgres
+--------------------------------
+Sets the PostgreSQL host to the postgres container service name to use PostgreSQL container as database server.
+
+- POSTGRES_USER=db_user_100
+--------------------------------
+Sets the PostgreSQL user name.
+
+- POSTGRES_PASSWORD=db_password_100_example!!!
+--------------------------------
+Sets the PostgreSQL user password. Change these in Production deployment (recommend to use .env variables)
+
+- POSTGRES_DB=db_name_100
+--------------------------------
+Sets the default PostgreSQL database name.
+
+volumes:
+- ./django-project:/django-project
+--------------------------------
+Mounts the ./django-project directory on the host to the /django-project directory in the container.
+
+networks:
+- internal-network
+--------------------------------
+Adds the Django-app container to the internal-network network.
+
+command:
+--------------------------------
+Run the commands
+
+if [ ! -f /django-project/certs/cpserver_ssl.cert ] || [ ! -f /django-project/certs/cpserver_ssl.key ]; then
+    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /django-project/certs/cpserver_ssl.key -out /django-project/certs/cpserver_ssl.cert -subj '/CN=CPserver' && \
+    echo 'Generated self-signed SSL certificates for CP Server'
+else
+    echo 'SSL certificates already exist'
+fi
+--------------------------------
+Check in the dir /django-project/certs/ to see if ssl files cpserver_ssl.cert and cpserver_ssl.key exist
+if not > create self-sign ssl certificate (10 year) using openssl for CherryPy server
+
+if [ ! -f /django-project/certs/server.cert ] || [ ! -f /django-project/certs/server.key ]; then
+  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /django-project/certs/server.key -out /django-project/certs/server.cert -subj '/CN=pgAdmin' && \
+  echo 'Generated self-signed SSL certificates for pgAdmin'
+else
+  echo 'SSL certificates for pgAdmin already exist'
+fi
+--------------------------------
+Check in the dir /django-project/certs/ to see if ssl files server.cert and server.key exist
+if not > create self-sign ssl certificates (10 year) using openssl for pgAdmin
+
+chmod -R 755 /django-project/certs
+--------------------------------
+Changes the permissions of the /django-project/certs dir to allow pgAdmin service to access the certificates.
+
+python3 manage.py wait_for_db
+--------------------------------
+run a custom command to waits for the database service to be available before starting django service.
+this custom commands is in /django-project/apps/users/management/commands/wait_for_db.py
+
+python3 manage.py makemigrations
+--------------------------------
+Creates Django database migrations.
+
+python3 manage.py migrate
+--------------------------------
+Apply Django database migrations.
+
+python3 manage.py collectstatic --noinput
+--------------------------------
+Standard Django collect static files operation (--noinput = without prompting for user confirmation).
+
+python3 cpserver.py
+--------------------------------
+Starts the production ready CherryPy server as web server instead of the built-in django runserver.

@@ -1,0 +1,78 @@
+Purpose
+------------------------------
+This documentation is for developers who need to understand, build, and deploy the Django application using Docker
+in this "Django One Step Ahead" starter templates. Familiarity with Debian, Docker, Python, and Django is expected.
+
+
+FROM python:3.12-bookworm
+-------------------------------
+Specifies the base image for the Docker build. Uses the official Python 3.12 image based on Debian 12 (bookworm).
+
+ENV PYTHONUNBUFFERED=1
+-------------------------------
+Sets the PYTHONUNBUFFERED environment variable to 1, which disables output buffering for Python.
+
+COPY ./requirements/production.txt /tmp/production.txt
+COPY ./requirements/development.txt /tmp/development.txt
+--------------------------------------------------------------
+Copies the dependencies file in the /django-project/requirements dir to the /tmp dir in the container.
+
+COPY ./django-project /django-project
+-------------------------------------------
+Copies the Django project files from ./django-project dir to the /django-project dir in the container.
+
+WORKDIR /django-project
+-------------------------------
+Sets the working directory for subsequent commands.
+
+EXPOSE 8000 and EXPOSE 5050
+-------------------------------
+Allow in-bound request to ports 8000 (for the Django application) and 5050 (for pgAdmin)
+
+ENV DEBIAN_FRONTEND=noninteractive
+--------------------------------------
+Prevents DEBIAN interactive prompts during package installation
+
+ENV TZ=Asia/Vientiane and related RUN command
+--------------------------------------------------
+Sets the timezone to Asia/Vientiane. Change this to your prefer timezone
+
+RUN apt-get update &&
+apt-get install -y --no-install-recommends apt-utils libpq5 build-essential memcached openssl &&
+apt-get upgrade -y &&
+apt-get autoremove -y
+-------------------------------
+Check for update > install apt-utils, (libpq5, build-essential (these two require for psycopg3 installation in later step)),
+memcached (for django cache), openssl (for ssl creation) > upgrade the system to latest > remove apt cache
+
+RUN python3 -m venv /venv
+-------------------------------
+Creates a Python virtual environment in the /venv directory
+
+RUN /venv/bin/pip install --upgrade pip
+--------------------------------------------------------------
+Upgrades pip in the virtual environment.
+
+RUN /venv/bin/pip install -r /tmp/production.txt
+--------------------------------------------------------------
+Installs django related requirements from the production.txt file
+
+RUN if [ $DEV = "true" ]; then /venv/bin/pip install -r /tmp/development.txt; fi
+---------------------------------------------------------------------------------------------
+Installs development dependencies if the DEV argument variable is set to true
+
+RUN rm -rf /tmp
+-------------------------------
+Removes temporary files when all installation commands are done.
+
+RUN adduser --disabled-password --no-create-home django-user
+-------------------------------
+Creates a non-root user django-user in the container
+
+ENV PATH="/venv/bin:$PATH"
+-------------------------------
+Adds the virtual environment's bin directory to the PATH so that we can access to python commands in the virtual env.
+
+USER django-user
+-------------------------------
+Switches to the django-user for subsequent commands.

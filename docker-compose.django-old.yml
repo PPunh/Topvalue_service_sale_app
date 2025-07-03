@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  django-app:
+    build:
+        context: . # . is to use current directory that running the docker-compose command
+        args:
+          - DEV=false
+    container_name: django-app
+    # env_file: .env  # Load environment variables from .env
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    environment:
+      - POSTGRES_HOST=postgres # Use the database docker's service name as the hostname
+      - POSTGRES_USER=db_user_100
+      - POSTGRES_PASSWORD=db_password_100_example!!!
+      - POSTGRES_DB=db_name_100
+      # - SECRET_KEY=django_secret_key
+    volumes:
+      # Mount (sync) django-project directory on host with django-project on docker
+      - ./django-project:/django-project
+    networks:
+      # Add this to connect to the inter-container network
+      - internal-network
+    command: >
+        sh -c "
+                if [ ! -f /django-project/certs/cpserver_ssl.cert ] || [ ! -f /django-project/certs/cpserver_ssl.key ]; then
+                    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /django-project/certs/cpserver_ssl.key -out /django-project/certs/cpserver_ssl.cert -subj '/CN=localhost' && \
+                    echo 'Generated self-signed SSL certificates for CP Server'
+                else
+                    echo 'SSL certificates already exist'
+                fi && \
+
+                if [ ! -f /django-project/certs/server.cert ] || [ ! -f /django-project/certs/server.key ]; then
+                  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /django-project/certs/server.key -out /django-project/certs/server.cert -subj '/CN=pgadmin' && \
+                  echo 'Generated self-signed SSL certificates for pgAdmin'
+                else
+                  echo 'SSL certificates for pgAdmin already exist'
+                fi && \
+
+                chmod -R 755 /django-project/certs && \
+
+                python3 manage.py wait_for_db && \
+                python3 manage.py makemigrations && \
+                python3 manage.py migrate && \
+                python3 manage.py collectstatic --noinput && \
+                python3 cpserver.py & \
+                python3 manage.py runserver 0.0.0.0:8001 --settings=settings-dev"
+
+# 1st "if": check and create SSL for CherryPy server
+# 2nd "if": check and create SSL for pgAdmin4. note: pgAdmin's docker config set ssl to server.cert and server.key
+# chmod -R 755: change permission to allow pgAdmin container to access certs dir

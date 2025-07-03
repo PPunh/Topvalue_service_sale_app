@@ -1,0 +1,164 @@
+/* Noto Sans Lao */
+@font-face {
+font-family: 'Noto Sans Lao';
+font-style: normal;
+font-weight: 400;
+src: url(NotoSansLao-Regular.woff) format('woff');
+}
+.lao-noto {
+	font-family: 'Noto Sans Lao',  sans-serif  !important;
+}
+
+/* Noto Sans Lao Looped */
+@font-face {
+font-family: 'Noto Sans Lao Looped';
+font-style: normal;
+font-weight: 400;
+src: url(NotoSansLao-Looped-Regular.woff) format('woff');
+}
+.lao-noto-looped {
+	font-family: 'Noto Sans Lao Looped',  sans-serif  !important;
+}
+
+/* Boon Lor */
+@font-face {
+font-family: 'Boon Lor';
+font-style: normal;
+font-weight: 400;
+src: url(BoonLor.woff) format('woff');
+}
+.lao-boonlor {
+	font-family: 'Boon Lor',  sans-serif  !important;
+}
+
+/* Lao My Letter */
+@font-face {
+font-family: 'Lao My Letter';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_my_letter.woff) format('woff');
+}
+.lao-myletter {
+	font-family: 'Lao My Letter',  sans-serif  !important;
+}
+
+/* Lao Hand Writing 11 */
+@font-face {
+font-family: 'Lao Hand Writing 11';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Handwriting11.woff) format('woff');
+}
+}
+.lao-hand11 {
+	font-family: 'Lao Hand Writing 11',  sans-serif  !important;
+}
+
+/* Lao Hand Writing 12 */
+@font-face {
+font-family: 'Lao Hand Writing 12';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Handwriting12.woff) format('woff');
+}
+.lao-hand12 {
+	font-family: 'Lao Hand Writing 12',  sans-serif  !important;
+}
+
+/* Lao Hand Writing 14 */
+@font-face {
+font-family: 'Lao Hand Writing 14';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Handwriting14.woff) format('woff');
+}
+.lao-hand14 {
+	font-family: 'Lao Hand Writing 14',  sans-serif  !important;
+}
+
+/* Lao Nakhorn */
+@font-face {
+font-family: 'Lao Nakhorn';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Nakhorn.woff) format('woff');
+}
+.lao-nakhorn {
+	font-family: 'Lao Nakhorn',  sans-serif  !important;
+}
+
+/* Lao PaKham */
+@font-face {
+font-family: 'Lao PaKham';
+font-style: normal;
+font-weight: 400;
+src: url(laopakham.woff) format('woff');
+}
+.lao-pakham {
+	font-family: 'Lao PaKham',  sans-serif  !important;
+}
+
+/* Lao Som Vang */
+@font-face {
+font-family: 'Lao Som Vang';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_SomVang.woff) format('woff');
+}
+.lao-somvang {
+	font-family: 'Lao Som Vang',  sans-serif  !important;
+}
+
+/* Lao KhanKham */
+@font-face {
+font-family: 'Lao KhanKham';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Khankham.woff) format('woff');
+}
+.lao-khankham {
+	font-family: 'Lao KhanKham',  sans-serif  !important;
+}
+
+/* Lao Luangpouchan 2 */
+@font-face {
+font-family: 'Lao Luangpouchan 2';
+font-style: normal;
+font-weight: 400;
+src: url(Lao_Luangpouchan2.woff) format('woff');
+}
+}
+.lao-luangpouchan2 {
+	font-family: 'Lao Luangpouchan 2',  sans-serif  !important;
+}
+
+/* Phetsarath OT */
+@font-face {
+font-family: 'Phetsarath OT';
+font-style: normal;
+font-weight: 400;
+src: url(Phetsarath-OT.woff) format('woff');
+}
+.lao-phetsarath {
+	font-family: 'Phetsarath OT',  sans-serif  !important;
+}
+
+/* Saysettha OT */
+@font-face {
+font-family: 'Saysettha OT';
+font-style: normal;
+font-weight: 400;
+src: url(Saysettha-OT.woff) format('woff');
+}
+.lao-saysettha {
+	font-family: 'Saysettha OT',  sans-serif  !important;
+}
+
+/* Lao Sikhai */
+@font-face {
+font-family: 'Lao Sikhai';
+src: url(Lao_Sikhai.woff), format('woff');
+}
+.lao-sikhai {
+	font-family: 'Lao Sikhai',  sans-serif !important;
+}

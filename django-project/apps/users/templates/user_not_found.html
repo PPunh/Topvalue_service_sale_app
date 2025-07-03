@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block main-content %}
+<br>
+<div class="w3-margin-bottom w3-center">
+
+    <div class="w3-row w3-margin-bottom">
+        <form action="{% url 'core:user_search' %}" method="get" class="w3-container">
+            {% csrf_token %}
+            {% include "snippets/form_generic.html" with form=form %}
+            <button class="w3-button w3-round-xlarge w3-margin-top w3-black" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="w3-panel w3-pale-red w3-border lao-noto"><h3>Not Found !</h3>Not found !</div>
+
+<br>
+<div class="w3-row w3-container w3-center">
+    <a href='{% url 'core:user_list' %}' class="w3-button w3-round-xlarge w3-margin-top w3-black"> Back </a>
+</div>
+
+
+{% endblock %}

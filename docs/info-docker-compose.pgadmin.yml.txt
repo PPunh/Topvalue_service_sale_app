@@ -1,0 +1,63 @@
+Purpose
+--------------------------------
+This docker-compose.pgadmin.yml file defines the pgAdmin 4 service, a web-based PostgreSQL database management tool.
+
+Context
+--------------------------------
+This file is part of a multi-container Docker Compose setup and is used in conjunction with other Compose
+files:
+- docker-compose.yml
+- docker-compose.memcached.yml
+- docker-compose.pgadmin.yml
+- docker-compose.django.yml
+
+
+version: "3.9"
+--------------------------------
+the Docker Compose file format version.
+
+ervices:
+    pgadmin:
+        image: dpage/pgadmin4:9.1
+--------------------------------
+the Docker image to use for the pgAdmin 4 service. It uses the official pgAdmin 4 version 9.1 image.
+
+container_name: pgadmin
+--------------------------------
+Assigns the container the name to pgadmin.
+
+ports:
+- "5050:443"
+--------------------------------
+Maps port 5050 on the host to HTTPS port 443 in the container.
+
+environment:
+    PGADMIN_DEFAULT_EMAIL: pgadmin_email@example.com
+    PGADMIN_DEFAULT_PASSWORD: pgadmin_password_example!!!
+--------------------------------
+Create pgAdmin administrator and password. Change these in Production deployment (recommend to use .env variables).
+
+PGADMIN_ENABLE_TLS: "True"
+--------------------------------
+Enables HTTPS for pgAdmin
+
+volumes:
+- pgadmin_data:/var/lib/pgadmin4
+--------------------------------
+Mounts the pgadmin_data named volume to the pgAdmin data directory.
+postgres_data managed by Docker, which is typically in /var/lib/docker/volumes/ on Linux hosts.
+"sudo docker-compose down --volumes" will be removed the pgadmin_data data as well, BE CAREFUL !!!
+
+- ./django-project/certs:/certs
+--------------------------------
+Mounts the ./django-project/certs dir on the host to the /certs dir in the container. so that pgAdmin4
+service can access to the ssl certificates
+
+restart: always
+--------------------------------
+Container to restart automatically if it crashes.
+
+networks:
+- internal-network
+--------------------------------
+Adds the container to the inter-container network name "internal-network".

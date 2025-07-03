@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block main-content %}
+    <div class="w3-container" style="margin-top: 100px;">
+       <div class="w3-container w3-animate-left">
+            <h1 class="lao-noto">ລາຍການລູກຄ້າ</h1>
+            <table class="w3-table w3-hoverable w3-striped w3-bordered">
+                <tr>
+                    <th class="w3-blue w3-padding">ລຳດັບ</th>
+                    <th class="w3-blue w3-padding">ລະຫັດລູກຄ້າ</th>
+                    <th class="w3-blue w3-padding">ບໍລະສັດ</th>
+                    <th class="w3-blue w3-padding">ຊື່</th>
+                    <th class="w3-blue w3-padding">ເບີໂທ</th>
+                    <th class="w3-blue w3-padding">ອີເມວ</th>
+                    <th class="w3-blue w3-padding">ສ້າງວັນທີ່</th>
+                </tr>
+                {% for customer in customers %}
+                    <tr>
+                        <td class="w3-padding">{{forloop.counter}}</td>
+                        <td class="w3-padding">{{customer.customer_id}}</td>
+                        <td class="w3-padding">{{customer.company_name}}</td>
+                        <td class="w3-padding">{{customer.contact_person_name}}</td>
+                        <td class="w3-padding">{{customer.phone_number}}</td>
+                        <td class="w3-padding">{{customer.email}}</td>
+                        <td class="w3-padding">{{customer.create_at|date:"d/m/Y"}}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="w3-red w3-text-white w3-padding">ບໍມີຂໍ້ມູນໃດໆ</td>
+                    </tr>
+                {% endfor %}
+            </table>
+    </div>
+{% endblock %}

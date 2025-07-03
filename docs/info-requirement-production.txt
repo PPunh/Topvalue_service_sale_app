@@ -1,0 +1,53 @@
+Purpose
+--------------------------------
+This document describe the dependencies which related to functions and features included
+with this "Django One Step Ahead" starter template.
+
+Installation
+-------------------------------
+pip install -r production.txt
+
+
+Django>=4.2,<5.3: Using Django version 4.2 or a later 4.x version, but less than 5.3.
+This is the core web framework.
+
+djangorestframework>=3.14.0: Using Django REST Framework (DRF) for building APIs.
+DRF is a powerful toolkit for creating web APIs
+
+psycopg[binary]>=3.1.8: PostgreSQL adapter for Python. It allows your Django application to connect to and interact with
+a PostgreSQL database. The [binary] part ensures that pre-compiled binary versions are used for faster installation.
+
+django-filter: This package provides generic filtering capabilities for Django QuerySets in front-end,
+especially useful for API endpoints.
+
+django-import-export: Enables importing and exporting data in various formats (e.g., CSV, Excel) for Django admin.
+
+uuid: a python standard library, used for generating unique identifiers.
+
+drf-spectacular>=0.26.5: This library automatically generates API schemas for your DRF,
+making it easy to document and test them.
+
+drf-spectacular-sidecar>=2023.10.1: This provides a sidecar application for serving the Swagger UI or ReDoc interface
+for API schema.
+
+whitenoise>=6.5: This Middleware helps serve static files (CSS, JavaScript, images) directly from Django application,
+eliminate the need to setup NGINX or Apache to serve static files.
+
+CherryPy>=18.10 and cheroot>=10.0: These packages are used for running a web server in the code. This server is
+production ready grade, much better than the built-in runserver, but still less scalability compare to NGINX or Apache,
+suitable for application less than 10,000 concurrent requests.
+
+django-ratelimit: This package allows to limit the number of requests a user can make to your API or pages,
+preventing DDOS attack.
+
+django-axes: This package tracks and blocks brute-force login attempts, enhancing security.
+
+pyOpenSSL: Used for SSL/TLS communication in CherryPy server.
+
+pymemcache: A Python client for Memcached, in memory object caching system. This helps improve performance
+by caching frequently accessed data in the memory.
+
+python-decouple: This library helps you separate application's configuration variable from its code, making it easier
+to manage sensitive information including username, password, keys etc.. and deploy to different environments.
+
+django-widget-tweaks: Allows you to easily customize the HTML attributes of Django form widgets in front-end.

@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  pgadmin:
+    image: dpage/pgadmin4:9.1  # Use the version 9.x pgAdmin image
+    container_name: pgadmin
+    ports:
+      - "5050:443"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin_email@example.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin_password_example!!!
+      PGADMIN_ENABLE_TLS: "True"
+      #PGADMIN_TLS_CERT_FILE: /certs/pgadmin_ssl.cert
+      #PGADMIN_TLS_KEY_FILE: /certs/pgadmin_ssl.key
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin4
+      - ./django-project/certs:/certs # Mount certificates directory
+    restart: always # Restart pgAdmin if it crashes
+    networks:
+      - internal-network

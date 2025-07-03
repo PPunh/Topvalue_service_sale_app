@@ -1,0 +1,20 @@
+body {
+    background-color: #f0efef;
+}
+.w3-login-form{
+    background: linear-gradient(to top right, #004e92, #000428);
+    color: white;
+    max-width: 400px;
+    margin:auto;
+    margin-top: 150px;
+}
+.w3-text-dark-grey {
+    color: #bbb !important;
+}
+.w3-panel.w3-pale-red {
+    background-color: #441010 !important;
+    color: #fdd !important;
+}
+.lao-noto {
+    font-family: 'Noto Sans Lao', sans-serif;
+}

@@ -1,0 +1,28 @@
+
+{% load widget_tweaks %}
+
+{% for field in form %}
+    <div class="w3-section">
+        {% if field|widget_type != 'hiddeninput' %}
+        <label class="w3-text-dark-grey">{{ field.label }}</label>
+        {% endif %}
+
+        {% if field|widget_type == 'checkboxinput' %}
+            {{ field|add_class:'w3-check' }}
+        {% elif field|widget_type == 'textinput' %}
+            {{ field|add_class:'w3-input w3-animate-input w3-theme-l5' }}
+        {% elif field|widget_type == 'textarea' %}
+            {{ field|add_class:'w3-input w3-border w3-theme-l5'|attr:'rows:4' }}
+        {% elif field|widget_type == 'clearablefileinput' %}
+            {{ field|add_class:'w3-input w3-border w3-theme-l5' }}
+        {% elif field|widget_type == 'dateinput' %}
+            {{ field|add_class:'w3-input w3-border'|attr:'type:date'}}
+        {% elif field|widget_type == 'selectdatewidget' %}
+            {{ field|add_class:'w3-select w3-theme-l5' }}
+        {% elif field|widget_type == 'select' %}
+            {{ field|add_class:'w3-select w3-theme-l5' }}
+        {% else %}
+            {{ field|add_class:'w3-input w3-theme-l5' }}
+        {% endif %}
+    </div>
+{% endfor %}

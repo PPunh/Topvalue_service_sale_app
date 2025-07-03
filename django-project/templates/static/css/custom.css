@@ -1,0 +1,48 @@
+#myNavbar{
+    /* background: linear-gradient(to right, #0097A7, #1976D2); */
+    background: linear-gradient(to right, #004e92, #000428);
+    color: white;
+    padding: 0 100px;
+    border-radius: 0 0 15px 15px;
+}
+@media screen and (max-width: 950px) {
+  #myNavbar {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+/* Animation Dropdown */
+@keyframes slideDown {
+from {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+
+/* Using with w3-dropdown-content */
+.w3-dropdown-hover:hover .w3-dropdown-content {
+display: block !important;
+animation: slideDown 0.3s ease-in-out;
+z-index: 9999;
+}
+
+/* Overlapping */
+.w3-dropdown-content {
+display: none;
+position: absolute;
+min-width: 350px !important;
+background-color: white;
+z-index: 999;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Hover Animation to right  */
+.w3-hover-to-right:hover{
+    padding-left: 35px;
+    background-color: #1976D2;
+    transition: ease-in-out .2s;
+}

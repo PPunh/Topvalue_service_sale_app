@@ -1,0 +1,59 @@
+Purpose
+--------------------------------
+This docker-compose.db.yml file defines the PostgreSQL database service for the Django application.
+It configures the PostgreSQL container with specific environment variables, volumes, and network settings.
+
+Context
+--------------------------------
+This file is part of a multi-container Docker Compose setup and is used in conjunction with other Compose
+files:
+- docker-compose.yml
+- docker-compose.memcached.yml
+- docker-compose.pgadmin.yml
+- docker-compose.django.yml
+
+
+version: "3.9"
+--------------------------------
+the Docker Compose file format version.
+
+services:
+  postgres:
+    image: postgres:16-bookworm
+--------------------------------
+The Docker image to use for the PostgreSQL service. Uses the official PostgreSQL 16 image based on Debian 12 (bookworm).
+
+container_name: postgres
+--------------------------------
+Assigns the container the name to postgres.
+
+environment:
+  POSTGRES_USER: db_user_100
+  POSTGRES_PASSWORD: xxxxyyyyzzzz
+  POSTGRES_DB: db_name_100
+--------------------------------
+Create postgre user/password and database. Change these in Production deployment (recommend to use .env variables)
+
+TZ: Asia/Vientiane
+--------------------------------
+Sets the operating system timezone inside the container to UTC +7 (Asia/Vientiane).
+
+PGTZ: Asia/Vientiane
+--------------------------------
+Sets the PostgreSQL timezone to UTC +7 (Asia/Vientiane).
+
+volumes:
+- postgres_data:/var/lib/postgresql/data
+--------------------------------
+Mounts the postgres_data named volume to the PostgreSQL data directory.
+postgres_data managed by Docker, which is typically in /var/lib/docker/volumes/ on Linux hosts.
+"sudo docker-compose down --volumes" will be removed the postgres_data data as well, BE CAREFUL !!!
+
+restart: always
+--------------------------------
+Container to restart automatically if it crashes.
+
+networks:
+- internal-network
+--------------------------------
+Adds the PostgreSQL container to the inter-container network name "internal-network".

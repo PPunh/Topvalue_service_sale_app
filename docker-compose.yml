@@ -1,0 +1,43 @@
+# This is the mail docker-compose.yml file
+version: "3.9"
+
+# Define named volumes to make data persitant when stop or remove the containter
+volumes:
+#  postgres_data:
+  pgadmin_data:
+
+# Define the network name for inter-container communication
+networks:
+  internal-network:
+
+# Define containers/services
+services:
+
+  # database
+  postgres:
+    extends:
+      file: docker-compose.db.yml
+      service: postgres
+
+  # cache for Django
+  memcached:
+    extends:
+      file: docker-compose.memcached.yml
+      service: memcached
+
+  # Django
+  django-app:
+    extends:
+      file: docker-compose.django.yml
+      service: django-app
+    depends_on:
+      - postgres
+      - memcached
+
+  # database management tool
+  pgadmin:
+    extends:
+      file: docker-compose.pgadmin.yml
+      service: pgadmin
+    depends_on:
+      - postgres

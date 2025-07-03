@@ -1,0 +1,182 @@
+{% load static %}
+<!-- Top Navbar -->
+<div class="w3-top">
+  <div class="w3-card w3-padding-16 w3-animate-top" id="myNavbar">
+    <!-- Logo and Company Name -->
+    <a href="#home" class="w3-bar-item w3-hover-none w3-padding-small" style="text-decoration: none;">
+      <img src="{% static 'images/logo-250x250.png' %}" alt="Logo" class="w3-image" style="height:40px; vertical-align:middle; filter: brightness(10);">
+      <span class="w3-large lao-noto w3-margin-left w3-text-white w3-middle"><strong>ບໍລິສັດ ທັອບວາລູ ເຊີວິດ ຈຳກັດ</strong></span>
+    </a>
+
+    <!-- Menu Icon for Small Screens -->
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium w3-hover-deep-orange" onclick="w3_open()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+    <!-- Right Side Menu -->
+    <div class="w3-right w3-hide-small">
+      
+      <!-- Quotation -->
+      <div class="w3-dropdown-hover" style="background: none;">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          ສະເຫນີລາຄາ <i class="material-icons w3-small">expand_more</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="{% url 'app_quotations:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ໃບສະເຫນີລາຄາທີ່ໄດ້ຂາຍ</a>
+          <a  href="{% url 'app_quotations:create_quotation' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ອອກໃບສະເຫນີລາຄາໃຫມ່</a>
+        </div>
+      </div>
+
+      <!-- Invoice -->
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          ໃບເກັບເງິນ <i class="material-icons w3-small">expand_more</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ໃບເກັບເງິນທັງຫມົດ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ອອກໃບເກັບເງິນໃຫມ່</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ບົດລາຍງານ</a>
+        </div>
+      </div>
+
+      <!-- Purchase Order -->
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          ໃບສັ່ງຊື້ <i class="material-icons w3-small">expand_more</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ທັງຫມົດໃບສັ່ງຊື້</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ອອກໃບສັ່ງຊື້ໃຫມ່</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ບົດລາຍງານ</a>
+        </div>
+      </div>
+
+      <!-- Contracts -->
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          ສັນຍາ <i class="material-icons w3-small">expand_more</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສັນຍາກຳລັງຈະຫມົດອາຍຸ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສັນຍາທີ່ຫມົດອາຍຸແລ້ວ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສັນຍາທັງຫມົດ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສ້າງສັນຍາໃຫມ່</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ບົດລາຍງານ</a>
+        </div>
+      </div>
+
+      <!-- Customer Data -->
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          ຂໍ້ມູນລູກຄ້າ <i class="material-icons w3-small">expand_more</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="{% url 'app_customers:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ລູກຄ້າທັງຫມົດ</a>
+          <a href="{% url 'app_customers:add_customer' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສ້າງໃຫມ່</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ບົດລາຍງານ</a>
+        </div>
+      </div>
+
+      <!-- User -->
+      <div class="w3-dropdown-hover">
+        <button class="w3-button w3-hover-deep-orange w3-text-white">
+          <i class="material-icons">person</i>
+        </button>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ຂໍ້ມູນບຸກຄົນ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ການຕັ້ງຄ່າ</a>
+          <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ປ່ຽນລະຫັດຜ່ານ</a>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <a href="{% url 'users:logout' %}" class="w3-button w3-red w3-text-white w3-hover-black w3-hover-shadow">
+        <i class="material-icons">logout</i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar for Small Screens -->
+<nav class="w3-sidebar w3-bar-block w3-light-grey w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none; width: 80%;" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-red w3-hover-black" style="text-align: right;">
+    <i class="fa fa-times"></i> ປິດ
+  </a>
+
+  <!-- Quotation Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('qDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      ສະເຫນີລາຄາ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="qDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="{% url 'app_quotations:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ໃບສະເຫນີລາຄາທີ່ໄດ້ຂາຍ</a>
+      <a href="{% url 'app_quotations:create_quotation' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ອອກໃບສະເຫນີລາຄາໃຫມ່</a>
+    </div>
+  </div>
+
+  <!-- Invoice Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('iDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      ໃບເກັບເງິນ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="iDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ໃບເກັບເງິນທັງຫມົດ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ອອກໃບເກັບເງິນໃຫມ່</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ບົດລາຍງານ</a>
+    </div>
+  </div>
+
+  <!-- Purchase Order Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('poDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      ໃບສັ່ງຊື້ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="poDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ທັງຫມົດໃບສັ່ງຊື້</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ອອກໃບສັ່ງຊື້ໃຫມ່</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ບົດລາຍງານ</a>
+    </div>
+  </div>
+
+  <!-- Contracts Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('contractDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      ສັນຍາ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="contractDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ກຳລັງຈະຫມົດອາຍຸ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ຫມົດອາຍຸແລ້ວ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ທັງຫມົດ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ສ້າງໃຫມ່</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ບົດລາຍງານ</a>
+    </div>
+  </div>
+
+  <!-- Customer Data Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('customerDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      ຂໍ້ມູນລູກຄ້າ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="customerDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="{% url 'app_customers:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ລູກຄ້າທັງຫມົດ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ບົດລາຍງານ</a>
+    </div>
+  </div>
+
+  <!-- User Dropdown -->
+  <div class="w3-dropdown-click">
+    <button onclick="toggleDropdown('userDropdown')" class="w3-button w3-block w3-left-align w3-hover-blue">
+      <i class="material-icons">person</i> ຜູ້ໃຊ້ <i class="fa fa-caret-down w3-right"></i>
+    </button>
+    <div id="userDropdown" class="w3-hide w3-white w3-card-4 w3-border">
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ຂໍ້ມູນບຸກຄົນ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ການຕັ້ງຄ່າ</a>
+      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ປ່ຽນລະຫັດຜ່ານ</a>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <a href="{% url 'users:logout' %}" class="w3-bar-item w3-button w3-hover-red w3-hover-text-white">
+    <i class="material-icons">logout</i> ອອກຈາກລະບົບ
+  </a>
+</nav>
