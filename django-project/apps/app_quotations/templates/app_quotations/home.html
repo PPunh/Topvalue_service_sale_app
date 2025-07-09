@@ -1,49 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
-
+{% load humanize %}
 
 {% block main-content %}
-    <div class="w3-container" style="margin-top: 100px;">
+ <div class="w3-container" style="margin-top: 70px;">
        <div class="w3-container w3-animate-left">
-            <h1 class="lao-noto">ຫນ້າຫລັກ ລາຍການໃບສະເຫນີລາຄາ</h1>
-            <table class="w3-table w3-hoverable w3-striped w3-bordered">
-                <thead>
-                    <tr>
-                        <th class="w3-blue w3-padding">ລຳດັບ</th>
-                        <th class="w3-blue w3-padding">ເລກທີໃບສະເຫນີລາຄາ</th>
-                        <th class="w3-blue w3-padding">ບໍລະສັດ</th>
-                        <th class="w3-blue w3-padding">ສິນຄ້າ</th>
-                        <th class="w3-blue w3-padding">ລາຄາ</th>
-                        <th class="w3-blue w3-padding">ຈຳນວນ</th>
-                        <th class="w3-blue w3-padding">ໄລຍະເວລາ</th>
-                        <th class="w3-blue w3-padding">ລວມ</th>
-                        <th class="w3-blue w3-padding">ລວມທັ່ງຫມົດ</th>
-                        <th class="w3-blue w3-padding">ວັນຫມົດອາຍຸ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for quo in quotations %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{ quo.quotation_number }}</td>
-                        <td>{{ quo.customer.company_name }}</td>
-                        <td>{{ quo.product_name }}</td>
-                        <td>{{ quo.qty }}</td>
-                        <td>{{ quo.price }}</td>
-                        <td>{{ quo.period }}</td>
-                        <td>{{ quo.total_one_product }}</td>
-                        <td>
-                            {% if quo.additional_expenses %}
-                                {{ quo.additional_expenses.vat }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>{{quo.expired_at|date:'d/m/Y'}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-    </div>
+        <h1 class="lao-noto">{{title}}</h1>
+        <table class="w3-table w3-hoverable w3-striped w3-bordered">
+            <tr class="w3-blue-dark-light w3-padding">
+                <th class="w3-border" style="text-align: center; width: 5%;">ລຳດັບ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ລະຫັດໃບສະເຫນີລາຄາ</th>
+                <th class="w3-border" style="text-align: center; width: 15%;">ບໍລະສັດ</th>
+                <th class="w3-border" style="text-align: center; width: 19%;">ສິນຄ້າ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ລາຄາ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ຈຳນວນ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ໄລຍະເວລາ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ລາຄາລວມ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ວັນທີ່ຫມົດອາຍຸ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ການຈັດການ</th>
+            </tr>
+            {% for quotation in all_quotations %}
+                <tr>
+                    <td class="w3-border">{{forloop.counter}}</td>
+                    <td class="w3-border">{{quotation.quotation_id}}</td>
+                    <td class="w3-border">{{quotation.customer.company_name}}</td>
+                    <td class="w3-border">
+                        {% for item in quotation.items.all %}
+                            {{forloop.counter}}. {{item.product_name}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: right; padding-right: 15px;">
+                        {% for item in quotation.items.all %}
+                            {{item.price}} USD <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">
+                        {% for item in quotation.items.all %}
+                            {{item.qty}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">
+                        {% for item in quotation.items.all %}
+                            {{item.period}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: right; padding-right: 15px;">
+                        {% for item in quotation.items.all %}
+                            {{item.total_one_product |intcomma}} USD <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">{{quotation.expired_date|date:"d/m/Y"}}</td>
+                    <td class="w3-border">
+                        <a href="{% url 'app_quotations:quotation_details' quotation.quotation_id %}" class="w3-button w3-round-large w3-hover-shadow w3-green w3-hover-blue w3-padding-small w3-margin-small" style="width: 80px;">ລາຍລະອຽດ</a>
+                        <a href="#" class="w3-button w3-round-large w3-hover-shadow w3-red w3-hover-deep-orange w3-padding-small w3-margin-small" style="width: 80px;">ລືບ</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10" class="w3-red w3-text-white w3-padding">ບໍມີຂໍ້ມູນໃດໆ</td>
+                </tr>
+            {% endfor %}
+        </table>
+</div>
 {% endblock %}

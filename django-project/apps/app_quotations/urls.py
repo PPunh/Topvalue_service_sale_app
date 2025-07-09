@@ -16,7 +16,9 @@ router = DefaultRouter()
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.home, name='home'),
-    path('create_quotation/', views.create_quotation, name='create_quotation'),
+    path('create_quotation/', views.create_quotation_with_customer, name='create_quotation'),
+    path('quotation_details/<str:quotation_id>/', views.quotation_details, name='quotation_details'),
+    path('quotation_details/quotation_form/<str:quotation_id>/', views.generate_quotation_form, name='generate_quotation_form'),
 ]
 
 # when user go to path /app_name/ it will show api root page (endpoints list)

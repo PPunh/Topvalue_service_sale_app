@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block main-content %}
+<div class="page w3-animate-left w3-animate-opacity" style="margin-top: 90px;">
+
+    <!-- Header logo -->
+    <header style="border-bottom: 4px solid #CFE2F3; padding-bottom: 10px;">
+        <div class="w3-cell-row" style="align-items: center;">
+            <div class="w3-cell">
+                <!-- โลโก้บริษัท -->
+                <img src="{% static 'app_quotations/images/tvs_text.png' %}" alt="logo-header" style="width:200px;">
+            </div>
+            <div class="w3-cell w3-right">
+                <!-- โลโก้พาร์ทเนอร์ -->
+                <img src="{% static 'app_quotations/images/partner.jpeg' %}" alt="logo-header" style="width:200px;">
+            </div>
+        </div>
+    </header>
+
+    <!-- Section: Quotation Info -->
+    <div class="w3-container" style="margin-top: 20px;">
+        <h1 class="w3-center" style="color: #7F7F7F; margin-bottom: 20px;"><strong><u>QUOTATION</u></strong></h1>
+        <div class="w3-cell-row" style="width: 100%; margin-bottom: 20px;">
+            <div class="w3-cell">
+                <!-- ข้อมูลลูกค้า -->
+                <p><b>To: </b>{{ generate_quotation_form.customer.company_name }}</p>
+                <p><b>Location: </b>{{ generate_quotation_form.customer.company_address }}</p>
+                <p><b>Contact Person: </b>{{ generate_quotation_form.customer.customer_name }}</p>
+                <p><b>Mobile Phone: </b>{{ generate_quotation_form.customer.phone_number }}</p>
+                <p><b>Email: </b>{{ generate_quotation_form.customer.email }}</p>
+            </div>
+            <div class="w3-cell w3-right">
+                <!-- ข้อมูลใบเสนอราคา -->
+                <p><b>Quotation_ID: </b>{{ generate_quotation_form.quotation_id }}</p>
+                <p><b>Create Date: </b>{{ generate_quotation_form.create_date|date:"d/m/Y" }}</p>
+                <p><b>Expired: </b>{{ generate_quotation_form.expired_date|date:"d/m/Y" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table: Quotation Items -->
+    <div class="w3-container">
+        <table class="w3-table">
+            <tr style="background-color:#cfe2f3;">
+                <th class="w3-border w3-center" style="width:5%;vertical-align: middle;">No</th>
+                <th class="w3-border w3-center" style="width:35%;vertical-align: middle;">Descriptions</th>
+                <th class="w3-border w3-center" style="width:10%;vertical-align: middle;">QTY</th>
+                <th class="w3-border w3-center" style="width:10%;vertical-align: middle;">Period(Month)</th>
+                <th class="w3-border w3-center" style="width:25%;vertical-align: middle;">Unit Price(USD)</th>
+                <th class="w3-border w3-center" style="width:15%;vertical-align: middle;">Amount(USD)</th>
+            </tr>
+            {% for item in generate_quotation_form.items.all %}
+            <tr>
+                <td class="w3-border w3-center">{{ forloop.counter }}</td>
+                <td class="w3-border">{{ item.product_name }}</td>
+                <td class="w3-border" style="text-align: center;">{{ item.qty }}</td>
+                <td class="w3-border" style="text-align: center;">{{ item.period }}</td>
+                <td class="w3-border" style="text-align: right;">{{ item.price|floatformat:2|intcomma }}</td>
+                <td class="w3-border" style="text-align: right;">{{ item.total_one_product|floatformat:2|intcomma }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="w3-center w3-text-red">No items found in this quotation.</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4"></td>
+                <td class="w3-border w3-text-blue" style="text-align: right;"> TOTAL: </td>
+                <td class="w3-border" style="text-align: right;">{{ generate_quotation_form.total_all_products|floatformat:2|intcomma }}</td>
+            </tr>
+            <!-- ============= Additional Expenses ============= -->
+            {% if generate_quotation_form.additional_expenses.it_service_percent is not None %}
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="w3-border w3-text-blue" style="text-align: right;"> <b>IT Service ({{ generate_quotation_form.additional_expenses.it_service_percent }}%):</b> </td>
+                    <td class="w3-border" style="text-align: right;"><b>{{ generate_quotation_form.additional_expenses.it_sevice_output|floatformat:2|intcomma }}</b></td>
+                </tr>
+            {% endif %}
+            {% if generate_quotation_form.additional_expenses.vat_percent is not None %}
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="w3-border w3-text-blue" style="text-align: right;"> <b>VAT ({{ generate_quotation_form.additional_expenses.vat_percent }}%):</b> </td>
+                    <td class="w3-border" style="text-align: right;"><b>{{ generate_quotation_form.additional_expenses.vat_output|floatformat:2|intcomma }}</b></td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td colspan="4"></td>
+                <td class="w3-border w3-text-blue" style="text-align: right;"> GRAND-TOTAL: </td>
+                <td class="w3-border" style="text-align: right;"><b>{{ generate_quotation_form.additional_expenses.grandTotal|floatformat:2|intcomma }}</b></td>
+            </tr>
+            {% if generate_quotation_form.additional_expenses.exchange_rate is not None %}
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="w3-border w3-text-blue" style="text-align: right;"> <b>Exchange Rate ({{ generate_quotation_form.additional_expenses.exchange_rate }}):</b> </td>
+                    <td class="w3-border" style="text-align: right;"><b>{{ generate_quotation_form.additional_expenses.exchange_rate_output|intcomma }}</b></td>
+                </tr>
+            {% endif %}
+            
+        </table>
+
+        <!-- Terms and Conditions -->
+        <div style="margin-top: 20px; font-size: 14px; line-height: 1.6;">
+            <p><b><u>Terms and Conditions:</u></b></p>
+            <p><b>Payment Terms:</b> <i>* 100% Payment in Advance (PIA)</i></p>
+            <p><b>Delivery Terms & Lead-Time:</b> <i>* Within 7 days after receiving payment</i></p>
+            <p><b>Warranty:</b> <i>* Based on subscription period<br>* Local support by Microsoft Cloud Engineers</i></p>
+        </div>
+
+        <!-- Footer Signature -->
+        <footer class="w3-cell-row" style="margin-top: 40px;">
+            <div class="w3-cell" style="width: 50%; vertical-align: bottom; text-align: center;">
+                <p class="w3-center">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
+                <p class="w3-center" style="color: #00205F; font-weight: bold;">Customer</p>
+            </div>
+
+            <div class="w3-cell" style="width: 50%; vertical-align: bottom; text-align: center;">
+                {% if employees %}
+                    <!-- ตราประทับและลายเซ็นพนักงาน -->
+                    <p class="w3-center"><img src="{{ employees.company_stamp.url }}" alt="Stamp and Signature" style="width: 250px;"></p>
+                    <p class="w3-center">{{ employees.employee_name }} {{ employees.employee_last_name|upper }}</p>
+                {% else %}
+                    <p class="w3-center w3-text-red">ບໍ່ມີຂໍ້ມູນຂອງຜູ້ຂາຍ</p>
+                {% endif %}
+                <p class="w3-center">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
+                <p class="w3-center" style="color: #00205F; font-weight: bold;">TVS Representative</p>
+            </div>
+        </footer>
+    </div>
+</div>
+<div class="float-btn w3-animate-left w3-animate-opacity">
+    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red" style="width: 200px;" href="{% url 'app_quotations:quotation_details' generate_quotation_form.quotation_id %}">ກັບຄືນ</a>    
+    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red" style="width: 200px;" href="#">ດາວໂຫລດໃບສະເຫນີລາຄາ {{one_quotation.quotation_id}}</a>    
+</div>
+{% endblock %}

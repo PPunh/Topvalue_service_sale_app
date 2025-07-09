@@ -3,118 +3,127 @@
 {% load widget_tweaks %}
 
 {% block main-content %}
-<div class="w3-container" style="margin-top: 100px;">
-    <div class="w3-container w3-animate-left">
-        <h1 class="lao-noto">ອອກໃບສະເຫນີລາຄາໃຫມ່</h1>
-        <form method="post" novalidate>
-            {% csrf_token %}
+<div class="w3-container w3-animate-left" style="margin-top: 100px;">
+    <h2 class="w3-text-blue lao-noto">{% if quotation_instance %}ແກ້ໄຂ{% else %}ສ້າງ{% endif %} ໃບສະເຫນີລາຄາ</h2>
 
-            <!-- Customer Form -->
-            <div class="w3-card-4 w3-padding w3-margin-bottom">
-                <h4 class="lao-noto">1. ຂໍ້ມູນລູກຄ້າ</h4>
-                {{ customer_form.non_field_errors }}
-                <div class="w3-row-padding">
-                    {% for field in customer_form %}
-                        <div class="w3-third w3-section">
-                            <label class="w3-text-grey">{{ field.label }}</label>
-                            {% render_field field class="w3-input w3-border w3-round-large" %}
-                            {% if field.errors %}
-                                <div class="w3-text-red w3-small">{{ field.errors }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
+    <form method="post" class="w3-container w3-light-grey w3-text-blue w3-margin-top">
+        {% csrf_token %}
+
+        <!-- ======================== Quotation Main Form ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຂໍ້ມູນໃບສະເຫນີລາຄາ</h3>
+            <div class="w3-row-padding">
+                {% for field in form.visible_fields %}
+                    <div class="w3-col l3 m6 s12 w3-padding">
+                        <label class="w3-text-dark">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="w3-text-red">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
+        </div>
 
-            <!-- Quotation FormSet -->
-            <div class="w3-card-4 w3-padding w3-margin-bottom">
-                <h4 class="lao-noto">2. ລາຍການສິນຄ້າ</h4>
-                
-                {{ quotation_formset.management_form }}
-                <div id="quotation-formset">
-                    {% for form in quotation_formset %}
-                        <div class="w3-row-padding w3-border w3-padding-small w3-margin-bottom quotation-item">
-                            {% for field in form.visible_fields %}
-                                <div class="w3-quarter w3-section">
-                                    <label class="w3-text-grey">{{ field.label }}</label>
-                                    {% render_field field class="w3-input w3-border w3-round-large" %}
+        <!-- ======================== Customer Form ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຂໍ້ມູນລູກຄ້າ</h3>
+            <div class="w3-row-padding">
+                {% for field in customer_form.visible_fields %}
+                    <div class="w3-col l3 m6 s12 w3-padding">
+                        <label class="w3-text-dark">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="w3-text-red">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ======================== Quotation Items Formset ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ລາຍການສິນຄ້າ</h3>
+            {{ item_formset.management_form }}
+            <div id="items-container">
+                {% for form_item in item_formset %}
+                    <div class="w3-row-padding w3-margin-bottom w3-light-blue w3-round-large w3-padding-small">
+                        {% for hidden_field in form_item.hidden_fields %}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        <div class="w3-row-padding">
+                            {% for field in form_item.visible_fields %}
+                                <div class="w3-col l3 m6 s12 w3-padding">
+                                    <label class="w3-text-dark">{{ field.label }}</label>
+                                    {{ field }}
                                     {% if field.errors %}
-                                        <div class="w3-text-red w3-small">{{ field.errors }}</div>
+                                        <div class="w3-text-red">{{ field.errors }}</div>
                                     {% endif %}
                                 </div>
                             {% endfor %}
-                            <div class="w3-right w3-margin-bottom">
-                                <button type="button" class="w3-button w3-red w3-round remove-form">ລົບ</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="empty-form" style="display: none;">
+                <div class="w3-row-padding w3-margin-bottom w3-light-blue w3-round-large w3-padding-small">
+                    <div class="w3-row-padding">
+                        {% for field in item_formset.empty_form.visible_fields %}
+                            <div class="w3-col l3 m6 s12 w3-padding">
+                                <label class="w3-text-dark">{{ field.label }}</label>
+                                {{ field }}
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Button to Add New -->
-                <button type="button" id="add-form" class="w3-button w3-green w3-round-large">+ ເພີ່ມສິນຄ້າ</button>
-            </div>
-
-
-            <!-- Additional Expenses Form -->
-            <div class="w3-card-4 w3-padding w3-margin-bottom">
-                <h4 class="lao-noto">3. ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ</h4>
-                {{ additional_form.non_field_errors }}
-                <div class="w3-row-padding">
-                    {% for field in additional_form %}
-                        <div class="w3-third w3-section">
-                            <label class="w3-text-grey">{{ field.label }}</label>
-                            {% render_field field class="w3-input w3-border w3-round-large" %}
-                            {% if field.errors %}
-                                <div class="w3-text-red w3-small">{{ field.errors }}</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
+            <button type="button" class="w3-button w3-blue w3-round-large" id="add-item">ເພີ່ມລາຍການ</button>
+        </div>
 
-            <div class="w3-center w3-padding">
-                <button type="submit" class="w3-button w3-blue w3-round-large w3-large">ບັນທຶກ</button>
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const formset = document.getElementById("quotation-formset");
-                    const addBtn = document.getElementById("add-form");
+        <!-- ======================== Additional Expenses Formset ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ</h3>
+            {{ additional_expenses_formset.management_form }}
+            {% for form_exp in additional_expenses_formset %}
+                <div class="w3-row-padding w3-light-blue w3-round-large w3-padding-small">
+                    {% for hidden_field in form_exp.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+                    <div class="w3-row-padding">
+                        {% for field in form_exp.visible_fields %}
+                            <div class="w3-col l3 m6 s12 w3-padding">
+                                <label class="w3-text-dark">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="w3-text-red">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-                    // ดึง form template สุดท้ายเพื่อ clone
-                    let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
-                    let formIndex = parseInt(totalForms.value);
-
-                    addBtn.addEventListener("click", function () {
-                        const newForm = formset.children[0].cloneNode(true);
-
-                        // ล้างค่าทุก input
-                        newForm.querySelectorAll("input, select").forEach(input => {
-                            input.name = input.name.replace(/-\d+-/, `-${formIndex}-`);
-                            input.id = input.id.replace(/-\d+-/, `-${formIndex}-`);
-                            if (input.type !== "hidden") {
-                                input.value = "";
-                            }
-                        });
-
-                        formset.appendChild(newForm);
-                        totalForms.value = formIndex + 1;
-                        formIndex++;
-                    });
-
-                    // Remove form
-                    formset.addEventListener("click", function (e) {
-                        if (e.target.classList.contains("remove-form")) {
-                            const item = e.target.closest(".quotation-item");
-                            if (formset.children.length > 1) {
-                                item.remove();
-                                totalForms.value = --formIndex;
-                            }
-                        }
-                    });
-                });
-            </script>
-
-        </form>
-    </div>
+        <button type="submit" class="w3-button w3-green w3-round-large w3-margin-bottom" style="width: 350px;">ບັນທຶກ</button>
+    </form>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const addItemButton = document.getElementById('add-item');
+    const itemsContainer = document.getElementById('items-container');
+    const totalFormsInput = document.querySelector('input[name$="items-TOTAL_FORMS"]');
+    const emptyFormDiv = document.getElementById('empty-form').firstElementChild;
+
+    addItemButton.addEventListener("click", function () {
+        const formCount = parseInt(totalFormsInput.value);
+        const newForm = emptyFormDiv.cloneNode(true);
+        const regex = new RegExp('__prefix__', 'g');
+
+        newForm.innerHTML = newForm.innerHTML.replace(regex, formCount);
+        itemsContainer.appendChild(newForm);
+        totalFormsInput.value = formCount + 1;
+    });
+});
+</script>
 {% endblock %}

@@ -1,74 +1,116 @@
 # coding=utf-8
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db import transaction
 
 #Login Request and rate_limit
 from django_ratelimit.decorators import ratelimit
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.db import transaction
 
-#Model
-from .models import QuotationsModel, AdditionalExpensesModel
+from django.forms import inlineformset_factory
+
+#Model and form
+from .forms import QuotationInformationModelForm, CustomersModelForm, QuotationItemsFormSet, AdditionalExpensesFormSet
+from .models import QuotationInformationModel, QuotationItemsModel, AdditionalExpenses
 from apps.app_customers.models import CustomersModel
 
-#Form
-from .forms import QuotationsModelForm, AdditionalExpensesModelForm, QuotationsModelFormSet
-from apps.app_customers.forms import CustomersModelForm
-
 #Function Views Here
-#Home Page of App Customers
+#====================================== Home page and list of all quotations ======================================
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
 def home(request):
-    quotations = QuotationsModel.objects.select_related('customer').prefetch_related('additional_expenses')
+    all_quotations = QuotationInformationModel.objects.all().order_by('expired_date')
     template = 'app_quotations/home.html'
     context = {
         'title':'ລາຍການໃບສະເຫນີລາຄາ',
-        'quotations':quotations
+        'all_quotations':all_quotations
     }
     return render(request, template, context)
 
 
+
+#====================================== Add Quotations ======================================
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
-def create_quotation(request):
-    if request.method == 'POST':
-        customer_form = CustomersModelForm(request.POST)
-        additional_form = AdditionalExpensesModelForm(request.POST)
-        quotation_formset = QuotationsModelFormSet(request.POST, queryset=QuotationsModel.objects.none())
+def create_quotation_with_customer(request, quotation_id=None):
+    quotation_instance = None
+    customer_instance = None
+    
+    if quotation_id:
+        quotation_instance = get_object_or_404(QuotationInformationModel, pk=quotation_id)
+        if hasattr(quotation_instance, 'customer'):
+            customer_instance = quotation_instance.customer
 
-        if customer_form.is_valid() and additional_form.is_valid() and quotation_formset.is_valid():
+    #Main Form
+    form = QuotationInformationModelForm(request.POST or None, instance=quotation_instance)
+    customer_form = CustomersModelForm(request.POST or None, instance=customer_instance, prefix='customer_form')
+    #Customer form for items and addtional Expenses
+    item_formset = QuotationItemsFormSet(request.POST or None, instance=quotation_instance, prefix='items')
+    additional_expenses_formset = AdditionalExpensesFormSet(request.POST or None, instance=quotation_instance, prefix='expenses')
+
+    if request.method == 'POST':
+        if form.is_valid() and customer_form.is_valid() and item_formset.is_valid() and additional_expenses_formset.is_valid():
             with transaction.atomic():
-                # Save customer first
+                #1 Save Customer first
                 customer = customer_form.save()
 
-                # Save all quotation items
-                quotations = quotation_formset.save(commit=False)
-                for quotation in quotations:
-                    quotation.customer = customer
-                    quotation.save()
+                #2 Set customer and quotation and save quotation
+                quotation = form.save(commit=False)
+                quotation.customer = customer
+                quotation.save()
 
-                # Save additional expense only if there is at least one quotation
-                if quotations:
-                    additional_expense = additional_form.save(commit=False)
-                    additional_expense.quotation = quotations[0]  # Use the first quotation
-                    additional_expense.calculate_totals()         # Ensure calculation before save
-                    additional_expense.save()
+                #3 Save Formset
+                item_formset.instance = quotation
+                item_formset.save()
 
-            messages.success(request, "ສ້າງໃບເສະເຫນີລາຄາສຳເລັດ!")
-            return redirect('app_quotations:home')
-        else:
-            messages.error(request, "ກວດສອບຂໍ້ມູນກ່ອນບັນທຶກ")
-    else:
-        customer_form = CustomersModelForm()
-        additional_form = AdditionalExpensesModelForm()
-        quotation_formset = QuotationsModelFormSet(queryset=QuotationsModel.objects.none())
-
+                if additional_expenses_formset.has_changed() or hasattr(quotation, 'additional_expenses'):
+                    additional_expenses_formset.instance = quotation
+                    additional_expenses_formset.save()
+                messages.success(request, 'ອອກໃບສະເຫນີລາຄາໃຫມ່ ສຳເລັດ')
+                return redirect('app_quotations:quotation_details', quotation_id=quotation.quotation_id)
     context = {
+        'title':'ອອກໃບສະເຫນີລາຄາໃຫມ່',
+        'form': form,
         'customer_form': customer_form,
-        'additional_form': additional_form,
-        'quotation_formset': quotation_formset,
-    }
-    return render(request, 'app_quotations/create_quotation.html', context)
+        'item_formset': item_formset,
+        'additional_expenses_formset': additional_expenses_formset,
+        'quotation_instance': quotation_instance, #for check while edit or create new
+    }           
+    return render (request, 'app_quotations/create_quotation.html', context)
 
+
+
+#====================================== Quotations Details ======================================
+@login_required
+@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
+def quotation_details(request, quotation_id):
+    one_quotation = get_object_or_404(QuotationInformationModel, quotation_id=quotation_id)
+    
+    quotation_items = one_quotation.items.all()  # related_name='items'
+    additional_expense = getattr(one_quotation, 'additional_expenses', None)  # related_name='additional_expenses'
+    
+    context = {
+        'title': 'ລາຍລະອຽດຂອງໃບສະເຫນີລາຄາ',
+        'one_quotation': one_quotation,
+        'quotation_items': quotation_items,
+        'additional_expense': additional_expense,
+        'total_price': one_quotation.total_all_products or 0,
+        'it_service_amount': additional_expense.it_sevice_output if additional_expense else 0,
+        'vat_amount': additional_expense.vat_output if additional_expense else 0,
+        'grand_total': additional_expense.grandTotal if additional_expense else one_quotation.total_all_products or 0,
+    }
+    
+    return render(request, 'app_quotations/quotation_details.html', context)
+
+#====================================== Quotations Generator ======================================
+@login_required
+@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
+def generate_quotation_form(request, quotation_id):
+    generate_quotation_form = get_object_or_404(QuotationInformationModel.objects.prefetch_related('items', 'additional_expenses'), quotation_id=quotation_id)
+    template = 'app_quotations/components/quotation_form.html'
+    context = {
+        'title': f'ໃບສະເຫນີລາຄາເລກທີ່{quotation_id}',
+        'generate_quotation_form':generate_quotation_form,
+    }
+    return render (request, template, context)

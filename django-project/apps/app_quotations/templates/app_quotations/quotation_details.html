@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block main-content %}
+<div class="w3-container w3-animate-opacity w3-animate-left" style="margin-top: 70px;">
+    
+    <!-- Header -->
+    <div class="w3-margin-bottom w3-padding-small">
+        <h2 class="lao-noto w3-text-blue-light">{{ title }} {{ one_quotation.quotation_id }}</h2>
+        <div class="w3-right w3-animate-right">
+            <a href="{% url 'app_quotations:generate_quotation_form' one_quotation.quotation_id %}" class="w3-button w3-animate-right w3-blue w3-hover-shadow w3-round-xlarge w3-hover-green">ເບິງໃບສະເຫນີລາຄາ ແລະ ດາວໂຫລດ</a>
+            <a href="{% url 'app_quotations:home' %}" class="w3-button w3-animate-right w3-red w3-hover-shadow w3-round-xlarge w3-hover-deep-orange">ອອກຈາກຫນ້ານີ້</a>
+        </div>
+        <p class="w3-text-gray">
+            ວັນທີ: {{ one_quotation.create_date|date:"d/m/Y" }} |
+            ໝົດອາຍຸ: {{ one_quotation.expired_date|date:"d/m/Y" }}
+        </p>
+        <span class="w3-tag w3-blue-light w3-round">{{ one_quotation.get_status_display }}</span>
+    </div>
+
+    <!-- Grid layout -->
+    <div class="w3-row-padding">
+        <!-- Left Column -->
+        <div class="w3-col l6 m12 w3-margin-bottom">
+            <!-- Customer Info -->
+            <div class="w3-card-4 w3-white w3-round-large w3-padding">
+                <h4 class="w3-text-blue lao-noto">ຂໍ້ມູນລູກຄ້າ</h4>
+                <p><b>ບໍລິສັດ:</b> {{ one_quotation.customer.company_name }}</p>
+                <p><b>ຜູ້ຕິດຕໍ່:</b> {{ one_quotation.customer.contact_person_name }}</p>
+                <p><b>ເບີໂທ:</b> {{ one_quotation.customer.phone_number }}</p>
+                <p><b>ອີເມວ:</b> {{ one_quotation.customer.email }}</p>
+                <p><b>ທີ່ຢູ່:</b> {{ one_quotation.customer.company_address }}</p>
+            </div>
+
+            <!-- Additional Expenses -->
+            <div class="w3-card-4 w3-white w3-round-large w3-padding w3-margin-top">
+                <h4 class="w3-text-blue lao-noto">ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ</h4>
+                <p><b>IT Service:</b>
+                    {{ additional_expense.it_service_percent }} %
+                </p>
+                <p><b>VAT:</b>
+                    {{ additional_expense.vat_percent }} %
+                </p>
+                <p><b>ອັດຕາແລກປ່ຽນ:</b>
+                    {{ additional_expense.exchange_rate|intcomma }} ກີບ
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="w3-col l6 m12">
+            <!-- Price Summary -->
+            <div class="w3-card-4 w3-pale-green w3-round-large w3-padding w3-margin-bottom">
+                <h4 class="w3-text-green lao-noto">ສະຫຼຸບລາຄາ</h4>
+                <p><b>ລວມລາຄາ:</b> {{ total_price|floatformat:2|intcomma }} USD</p>
+                {% if it_service_amount != 0 %}
+                    <p><b>+ IT Service:</b> {{ it_service_amount|floatformat:2|intcomma }} USD</p>
+                {% endif %}
+                {% if vat_amount != 0 %}
+                    <p><b>+ VAT:</b> {{ vat_amount|floatformat:2|intcomma }} USD</p>
+                {% endif %}
+                <hr>
+                <h3 class="lao-noto w3-text-blue-light"><b>ລວມທັງໝົດ:</b> <span class="w3-text-red">{{ grand_total|floatformat:2|intcomma }} USD</span></h3>
+                {% if additional_expense.exchange_rate_output != 0 %}
+                    <h3 class="lao-noto w3-text-blue-light"><b>ໄລ່ເປັນກີບ:</b><span class="w3-text-deep-orange"> {{ additional_expense.exchange_rate_output |intcomma }} ກີບ</span> </h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="w3-container">
+            <!-- Quotation Items Table -->
+            <div class="w3-card-4 w3-white w3-round-large w3-padding w3-margin-top">
+                <h4 class="w3-text-blue lao-noto">ລາຍການສິນຄ້າ</h4>
+                <div class="w3-responsive">
+                    <table class="w3-table w3-striped w3-border w3-small">
+                        <thead>
+                            <tr class="w3-blue-dark-light">
+                                <th>ລຳດັບ</th>
+                                <th>ສິນຄ້າ</th>
+                                <th>ລາຄາ</th>
+                                <th>ຈຳນວນ</th>
+                                <th>ໄລຍະເວລາ</th>
+                                <th>ລວມ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in quotation_items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.price|floatformat:2|intcomma }} USD</td>
+                                <td>{{ item.qty }}</td>
+                                <td>{{ item.period }}</td>
+                                <td>{{ item.total_one_product|floatformat:2|intcomma }} USD</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="w3-center">ບໍ່ມີລາຍການສິນຄ້າ</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

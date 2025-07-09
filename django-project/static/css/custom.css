@@ -5,6 +5,28 @@
     padding: 0 100px;
     border-radius: 0 0 15px 15px;
 }
+.w3-blue-light-dark{
+    background: linear-gradient(to right, #004e92, #000428);
+    color: white;
+}
+.w3-blue-dark-light{
+    background: linear-gradient(to right, #000428, #004e92);
+    color: white;
+}
+.w3-blue-dark{
+    background-color: #000428;
+    color: white;
+}
+.w3-blue-light{
+  background-color: #004e92;
+  color: #ffffff;
+}
+.w3-text-blue-dark{
+    color: #000428;
+}
+.w3-text-blue-light{
+    color: #004e92;
+}
 @media screen and (max-width: 950px) {
   #myNavbar {
     padding-left: 0;

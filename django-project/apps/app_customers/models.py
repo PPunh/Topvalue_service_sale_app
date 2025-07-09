@@ -27,8 +27,8 @@ class CustomersModel(models.Model):
     create_at = models.DateField(default=timezone.now)
 
     class Meta:
-        verbose_name = 'CustomersModel'
-        verbose_name_plural = 'CustomersModel'
+        verbose_name = 'ຂໍ້ມູນກ່ຽວກັບລູກຄ້າ'
+        verbose_name_plural = 'ຂໍ້ມູນກ່ຽວກັບລູກຄ້າ'
         ordering = ('-create_at',)
 
     def __str__(self):
