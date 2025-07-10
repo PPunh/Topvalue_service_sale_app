@@ -1,0 +1,129 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File</title>
+    <link rel="stylesheet" href="{% static 'app_quotations/css/quotation_pdf.css' %}">
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-row">
+                <div class="header-cell">
+                    <img src="{% static 'app_quotations/images/tvs_text.png' %}" alt="logo-header">
+                </div>
+                <div class="header-cell header-right">
+                    <img src="{% static 'app_quotations/images/partner.jpeg' %}" alt="logo-header">
+                </div>
+            </div>
+        </header>
+
+        <div class="content-section">
+            <h1 class="main-heading"><strong><u>QUOTATION</u></strong></h1>
+            <div class="info-row">
+                <div class="info-cell">
+                    <p><b>To: </b>{{ generate_quotation_form.customer.company_name }}</p>
+                    <p><b>Location: </b>{{ generate_quotation_form.customer.company_address }}</p>
+                    <p><b>Contact Person: </b>{{ generate_quotation_form.customer.customer_name }}</p>
+                    <p><b>Mobile Phone: </b>{{ generate_quotation_form.customer.phone_number }}</p>
+                    <p><b>Email: </b>{{ generate_quotation_form.customer.email }}</p>
+                </div>
+                <div class="info-cell info-right">
+                    <div style="text-align: right;">
+                        <p><b>Quotation_ID: </b>{{ generate_quotation_form.quotation_id }}</p>
+                        <p><b>Create Date: </b>{{ generate_quotation_form.create_date|date:"d/m/Y" }}</p>
+                        <p><b>Expired: </b>{{ generate_quotation_form.expired_date|date:"d/m/Y" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <table>
+                <tr style="background-color:#cfe2f3;">
+                    <th class="align-center" style="width:5%;">No</th>
+                    <th class="align-center" style="width:35%;">Descriptions</th>
+                    <th class="align-center" style="width:10%;">QTY</th>
+                    <th class="align-center" style="width:10%;">Period(Month)</th>
+                    <th class="align-center" style="width:25%;">Unit Price(USD)</th>
+                    <th class="align-center" style="width:15%;">Amount(USD)</th>
+                </tr>
+                {% for item in generate_quotation_form.items.all %}
+                <tr>
+                    <td class="align-center">{{ forloop.counter }}</td>
+                    <td>{{ item.product_name }}</td>
+                    <td class="align-center">{{ item.qty }}</td>
+                    <td class="align-center">{{ item.period }}</td>
+                    <td class="align-right">{{ item.price|floatformat:2|intcomma }}</td>
+                    <td class="align-right">{{ item.total_one_product|floatformat:2|intcomma }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="align-center text-red">No items found in this quotation.</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4" style="border: none !important;"></td>
+                    <td class="text-blue align-right"> TOTAL: </td>
+                    <td class="align-right">{{ generate_quotation_form.total_all_products|floatformat:2|intcomma }}</td>
+                </tr>
+                {% if generate_quotation_form.additional_expenses.it_service_percent is not None %}
+                    <tr>
+                        <td colspan="4" style="border: none !important;"></td>
+                        <td class="text-blue align-right"> <b>IT Service ({{ generate_quotation_form.additional_expenses.it_service_percent }}%):</b> </td>
+                        <td class="align-right"><b>{{ generate_quotation_form.additional_expenses.it_sevice_output|floatformat:2|intcomma }}</b></td>
+                    </tr>
+                {% endif %}
+                {% if generate_quotation_form.additional_expenses.vat_percent is not None %}
+                    <tr>
+                        <td colspan="4" style="border: none !important;"></td>
+                        <td class="text-blue align-right"> <b>VAT ({{ generate_quotation_form.additional_expenses.vat_percent }}%):</b> </td>
+                        <td class="align-right"><b>{{ generate_quotation_form.additional_expenses.vat_output|floatformat:2|intcomma }}</b></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="4" style="border: none !important;"></td>
+                    <td class="text-blue align-right"> GRAND-TOTAL: </td>
+                    <td class="align-right"><b>{{ generate_quotation_form.additional_expenses.grandTotal|floatformat:2|intcomma }}</b></td>
+                </tr>
+                {% if generate_quotation_form.additional_expenses.exchange_rate is not None %}
+                    <tr>
+                        <td colspan="4" style="border: none !important;"></td>
+                        <td class="text-blue align-right"> <b>Exchange Rate ({{ generate_quotation_form.additional_expenses.exchange_rate }}):</b> </td>
+                        <td class="align-right"><b>{{ generate_quotation_form.additional_expenses.exchange_rate_output|intcomma }}</b></td>
+                    </tr>
+                {% endif %}
+
+            </table>
+
+            <div class="terms-conditions-section">
+                <p><b><u>Terms and Conditions:</u></b></p>
+                <p><b>Payment Terms:</b> <i>* 100% Payment in Advance (PIA)</i></p>
+                <p><b>Delivery Terms & Lead-Time:</b> <i>* Within 7 days after receiving payment</i></p>
+                <p><b>Warranty:</b> <i>* Based on subscription period<br>* Local support by Microsoft Cloud Engineers</i></p>
+            </div>
+
+            <footer class="footer-row">
+                <div class="footer-cell align-bottom align-center">
+                    <p class="dotted-line">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
+                    <p class="text-darkblue bold-text">Customer</p>
+                </div>
+
+                <div class="footer-cell align-bottom align-center">
+                    {% if employies %}
+                        <p class="align-center"><img src="{{ employies.signature.url }}" alt="Stamp and Signature"></p>
+                        <p class="align-center"><strong>{{ employies.employies_name }} {{ employies.employies_lastname|upper }}</strong></p>
+                    {% else %}
+                        <p class="align-center text-red">ບໍ່ມີຂໍ້ມູນຂອງຜູ້ຂາຍ</p>
+                    {% endif %}
+                    <p class="dotted-line">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
+                    <p class="text-darkblue bold-text">TVS Representative</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

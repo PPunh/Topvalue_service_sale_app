@@ -4,17 +4,27 @@
 {% load humanize %}
 
 {% block main-content %}
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    table tr th,
+    table tr td {
+        padding: 3px !important;
+        margin: 3px !important;
+        font-size: 12px;
+    }
+</style>
 <div class="page w3-animate-left w3-animate-opacity" style="margin-top: 90px;">
 
     <!-- Header logo -->
     <header style="border-bottom: 4px solid #CFE2F3; padding-bottom: 10px;">
         <div class="w3-cell-row" style="align-items: center;">
             <div class="w3-cell">
-                <!-- โลโก้บริษัท -->
                 <img src="{% static 'app_quotations/images/tvs_text.png' %}" alt="logo-header" style="width:200px;">
             </div>
             <div class="w3-cell w3-right">
-                <!-- โลโก้พาร์ทเนอร์ -->
                 <img src="{% static 'app_quotations/images/partner.jpeg' %}" alt="logo-header" style="width:200px;">
             </div>
         </div>
@@ -25,7 +35,6 @@
         <h1 class="w3-center" style="color: #7F7F7F; margin-bottom: 20px;"><strong><u>QUOTATION</u></strong></h1>
         <div class="w3-cell-row" style="width: 100%; margin-bottom: 20px;">
             <div class="w3-cell">
-                <!-- ข้อมูลลูกค้า -->
                 <p><b>To: </b>{{ generate_quotation_form.customer.company_name }}</p>
                 <p><b>Location: </b>{{ generate_quotation_form.customer.company_address }}</p>
                 <p><b>Contact Person: </b>{{ generate_quotation_form.customer.customer_name }}</p>
@@ -33,7 +42,6 @@
                 <p><b>Email: </b>{{ generate_quotation_form.customer.email }}</p>
             </div>
             <div class="w3-cell w3-right">
-                <!-- ข้อมูลใบเสนอราคา -->
                 <p><b>Quotation_ID: </b>{{ generate_quotation_form.quotation_id }}</p>
                 <p><b>Create Date: </b>{{ generate_quotation_form.create_date|date:"d/m/Y" }}</p>
                 <p><b>Expired: </b>{{ generate_quotation_form.expired_date|date:"d/m/Y" }}</p>
@@ -117,10 +125,9 @@
             </div>
 
             <div class="w3-cell" style="width: 50%; vertical-align: bottom; text-align: center;">
-                {% if employees %}
-                    <!-- ตราประทับและลายเซ็นพนักงาน -->
-                    <p class="w3-center"><img src="{{ employees.company_stamp.url }}" alt="Stamp and Signature" style="width: 250px;"></p>
-                    <p class="w3-center">{{ employees.employee_name }} {{ employees.employee_last_name|upper }}</p>
+                {% if employies %}
+                    <p class="w3-center"><img src="{{ employies.signature.url }}" alt="Stamp and Signature" style="width: 250px;"></p>
+                    <p class="w3-center"><strong>{{ employies.employies_name }} {{ employies.employies_lastname|upper }}</strong></p>
                 {% else %}
                     <p class="w3-center w3-text-red">ບໍ່ມີຂໍ້ມູນຂອງຜູ້ຂາຍ</p>
                 {% endif %}
@@ -130,8 +137,18 @@
         </footer>
     </div>
 </div>
-<div class="float-btn w3-animate-left w3-animate-opacity">
-    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red" style="width: 200px;" href="{% url 'app_quotations:quotation_details' generate_quotation_form.quotation_id %}">ກັບຄືນ</a>    
-    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red" style="width: 200px;" href="#">ດາວໂຫລດໃບສະເຫນີລາຄາ {{one_quotation.quotation_id}}</a>    
+<div class="float-btn w3-animate-right w3-animate-opacity">
+    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
+   style="width: 200px;"
+   href="{% url 'app_quotations:quotation_details' generate_quotation_form.quotation_id %}">
+    ກັບຄືນ
+</a>
+
+<a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
+   style="width: 200px;"
+   href="{% url 'app_quotations:quotation_generator_pdf' generate_quotation_form.quotation_id %}">
+    ດາວໂຫລດໃບສະເຫນີລາຄາ {{ quotation_id }}
+</a>
+   
 </div>
 {% endblock %}

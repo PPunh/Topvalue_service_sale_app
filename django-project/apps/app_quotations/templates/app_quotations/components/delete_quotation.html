@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block main-content %}
+<div class="w3-container w3-display-container w3-animate-top" style="height:80vh;">
+    <div class="w3-display-middle w3-card-4 w3-round-xlarge w3-padding-large w3-blue-light-dark" style="max-width:700px; width:90%;">
+        <div class="w3-center">
+            {# Using a clear icon for visual cue of deletion #}
+            <i class="fa fa-exclamation-triangle w3-text-red w3-xxxlarge w3-margin-bottom"></i>
+            <h3 class="w3-text-red lao-noto">
+                ຢືນຢັນການລຶບໃບສະເຫນີລາຄາ
+            </h3>
+            <h4 class="lao-noto">
+                ທ່ານແນ່ໃຈແລ້ວບໍ່ວ່າຕ້ອງການລຶບໃບສະເຫນີລາຄານີ້?
+                <br>
+                <strong>ເລກໃບສະເໜີລາຄາ:</strong> {{ delete_one_quotation.quotation_id }} <br>
+                <strong>ຊືບໍລິສັດ:</strong> {{ delete_one_quotation.customer.company_name }} <br>
+            </h4>
+        </div>
+
+        <form method="post" class="w3-center w3-margin-top">
+            {% csrf_token %}
+            <button type="submit" class="w3-button w3-red w3-round-large w3-hover-shadow w3-margin-small" style="width:250px;">
+                <i class="fa fa-trash-o w3-margin-right"></i>ຢືນຢັນການລຶບ
+            </button>
+            <a href="{% url 'app_quotations:home' %}" class="w3-button w3-blue w3-round-large w3-hover-shadow w3-margin-small" style="width:250px;">
+                <i class="fa fa-times w3-margin-right"></i>ຍົກເລີກ
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, User
 from .backends import MultiAuthBackend
 
 from . import models
+from .models import User
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=100, label="Usename / Email / Phone number")
@@ -34,3 +35,26 @@ class LoginForm(AuthenticationForm):
                 self.user_cache = user
 
         return self.cleaned_data
+    
+class CustomerUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'phone_number',
+            'password1',
+            'password2'
+        ]
+        labels = {
+            'username': 'ລະຫັດຜູ້ໃຊ້',
+            'email': 'ອີເມວ',
+            'phone_number': 'ເບີໂທລະສັບ',
+            'password1': 'ລະຫັດຜ່ານ',
+            'password2': 'ຢືນຢັນລະຫັດຜ່ານ',
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        css_class = 'form-control w3-input w3-border w3-round-large w3-margin-bottom'
+        for field in self.fields.values():
+            field.widget.attrs['class']= f"{field.widget.attrs.get('class', '')} {css_class}".strip

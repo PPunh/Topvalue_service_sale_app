@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.users', # custom users app, extending the default built-in Django Auth
     'apps.app_customers',
     'apps.app_quotations',
+    'apps.app_employies',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -198,7 +199,7 @@ DEFAULT_CHARSET = 'utf-8'
 # use WhiteNoise storage backend to server static files with compression
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

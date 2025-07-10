@@ -17,3 +17,4 @@ pymemcache
 pyOpenSSL
 Pillow
 Pillow>=9.0
+weasyprint>=65.1

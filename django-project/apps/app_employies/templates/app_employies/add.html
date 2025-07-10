@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block main-content %}
+    <div class="w3-container" style="margin-top: 100px;">
+       <div class="w3-container w3-animate-left">
+            <h1 class="lao-noto">{{title}}</h1>
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section w3-container w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+                <h3 class="w3-text-blue lao-noto">ຂໍ້ມູນພະນັກງານ</h3>
+                <div class="w3-row-padding">
+                    {% for field in form.visible_fields %}
+                        <div class="w3-col l3 m6 s12 w3-padding">
+                            <label class="w3-text-dark">{{field.label}}</label>
+                            {{field}}
+                            {% if field.errors %}
+                                <div class="w3-text-red">{{field.errors}}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w3-button w3-padding w3-margin w3-round-xxlarge w3-blue w3-hover-deep-orange w3-hover-shadow">ສ້າງບັນຊີພະນັກງານ</button>
+            </div>
+            </form>
+    </div>
+{% endblock %}

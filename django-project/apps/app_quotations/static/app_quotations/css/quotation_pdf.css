@@ -1,0 +1,237 @@
+/* --- Global Resets for PDF --- */
+@page {
+    size: A4; /* กำหนดขนาดกระดาษเป็น A4 */
+    margin: 1.5cm; /* กำหนดระยะขอบของหน้ากระดาษทุกด้าน */
+}
+
+/* Base styles for the PDF document */
+html, body {
+    margin: 0;
+    padding: 0;
+    /* กำหนด font-family หลัก (ถ้าใช้ Saysettha OT อย่าลืม @font-face) */
+    font-family: 'Saysettha OT', sans-serif;
+    font-size: 9.5pt; /* ขนาดฟอนต์พื้นฐานสำหรับเอกสาร PDF */
+    line-height: 1.35; /* ปรับระยะห่างระหว่างบรรทัดให้กระชับขึ้น */
+    color: #333; /* สีตัวอักษรเริ่มต้น */
+}
+
+/* Ensure common elements are reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Typography --- */
+h1.main-heading { /* ใช้ class ใหม่ */
+    font-size: 16pt;
+    color: #7F7F7F;
+    margin-bottom: 8pt;
+    text-align: center;
+    text-decoration: underline;
+}
+
+p {
+    font-size: 9pt;
+    line-height: 1.3;
+    margin-bottom: 2pt;
+}
+
+b { font-weight: bold; }
+i { font-style: italic; }
+
+/* Custom text colors/styles */
+.text-red { color: red; }
+.text-blue { color: #00205F; } /* สีน้ำเงินในตาราง */
+.text-darkblue { color: #00205F; } /* สีน้ำเงินเข้มใน footer */
+.bold-text { font-weight: bold; }
+
+/* --- Layout and Structure --- */
+.page {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    display: block;
+}
+
+.content-section { /* Class ใหม่สำหรับ div.w3-container */
+    width: 100%;
+    padding: 0;
+    margin-bottom: 10pt; /* เพิ่มระยะห่างระหว่าง section */
+}
+
+/* Header layout */
+header {
+    border-bottom: 2pt solid #CFE2F3;
+    padding-bottom: 8pt;
+    margin-bottom: 15pt;
+    display: block; /* เพื่อให้ div ข้างในจัดเรียงได้ */
+}
+
+.header-row { /* Class ใหม่สำหรับ w3-cell-row ใน header */
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    align-items: center; /* vertical-align: middle จะถูกใช้กับ table-cell */
+}
+
+.header-cell { /* Class ใหม่สำหรับ w3-cell ใน header */
+    display: table-cell;
+    vertical-align: middle; /* จัดกลางแนวตั้ง */
+}
+.header-cell.header-right {
+    text-align: right;
+}
+
+/* Image scaling */
+header img {
+    max-width: 150pt;
+    height: auto;
+    display: inline-block; /* เพื่อให้อยู่ใน flow และจัดตำแหน่งได้ */
+    vertical-align: middle;
+}
+
+/* Info section (To:, Quotation_ID:) */
+.info-row { /* Class ใหม่สำหรับ w3-cell-row ใน info section */
+    display: table;
+    width: 100% !important;
+    table-layout: fixed;
+    margin-bottom: 15pt; /* ระยะห่างระหว่างส่วนข้อมูลกับตาราง */
+}
+
+.info-cell { /* Class ใหม่สำหรับ w3-cell ใน info section */
+    display: table-cell;
+    vertical-align: top;
+}
+.info-cell.info-right {
+    text-align: left;
+}
+
+
+/* --- Table Styles --- */
+table { /* ไม่มี class w3-table แล้ว ใช้ table selector ตรงๆ */
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 10pt; /* ระยะห่างด้านล่างของตาราง */
+}
+
+table tr th,
+table tr td {
+    padding: 2.5pt 3pt !important;
+    margin: 0 !important;
+    font-size: 8pt;
+    border: 0.5pt solid #ccc;
+    vertical-align: middle;
+}
+
+table tr th {
+    background-color: #cfe2f3;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Alignment classes (ใหม่) */
+.align-center { text-align: center; }
+.align-right { text-align: right; }
+.align-bottom { vertical-align: bottom; } /* สำหรับ footer cell */
+
+
+/* Alignment for summary rows (ใช้ class ใหม่) */
+table tr:nth-last-child(1) td:nth-child(5), /* GRAND-TOTAL label */
+table tr:nth-last-child(2) td:nth-child(5), /* VAT label */
+table tr:nth-last-child(3) td:nth-child(5), /* IT Service label */
+table tr:nth-last-child(4) td:nth-child(5) { /* TOTAL label */
+    font-weight: bold;
+}
+
+/* Alignment for summary values */
+table tr:nth-last-child(1) td:nth-child(6), /* GRAND-TOTAL value */
+table tr:nth-last-child(2) td:nth-child(6), /* VAT value */
+table tr:nth-last-child(3) td:nth-child(6), /* IT Service value */
+table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
+    font-weight: bold;
+}
+
+
+/* --- Terms and Conditions --- */
+.terms-conditions-section { /* Class ใหม่สำหรับ div ของ Terms */
+    margin-top: 15pt;
+    font-size: 9pt;
+    line-height: 1.4;
+}
+.terms-conditions-section p {
+    margin-bottom: 1pt;
+}
+.terms-conditions-section p:first-child {
+    margin-bottom: 5pt;
+}
+
+
+/* --- Footer specific adjustments --- */
+.footer-row { /* Class ใหม่สำหรับ w3-cell-row ใน footer */
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 30pt; /* ปรับ margin-top สำหรับ footer */
+}
+
+.footer-cell { /* Class ใหม่สำหรับ w3-cell ใน footer */
+    display: table-cell;
+    vertical-align: bottom; /* จัด bottom aligned */
+    text-align: center;
+    width: 50%; /* กำหนดความกว้าง 50% ให้แต่ละ cell */
+}
+
+.footer-cell p {
+    font-size: 8pt;
+    line-height: 1.2;
+    margin-bottom: 2pt;
+    padding: 0;
+}
+
+.footer-cell img {
+    max-width: 180pt;
+    height: auto;
+    display: block;
+    margin: 0 auto 5pt auto; /* จัดกึ่งกลางและมี margin ด้านล่าง */
+}
+
+/* The dotted line for signature */
+.dotted-line { /* Class ใหม่สำหรับเส้นประ */
+    margin-bottom: 20pt; /* เพิ่มระยะห่างด้านล่างเส้นประ */
+    line-height: 1; /* เพื่อให้เส้นประไม่ถูกขยาย */
+}
+
+/* Adjustments for the second dotted line (TVS Representative) */
+.footer-cell .dotted-line:nth-of-type(2) { /* เลือกเส้นประอันที่ 2 */
+    margin-top: 20pt;
+    margin-bottom: 0; /* ตรวจสอบว่าไม่เกิด margin ซ้อน */
+}
+
+
+/* --- Hide elements not needed in PDF --- */
+.float-btn {
+    display: none !important;
+}
+
+/* Custom CSS classes from original - Ensure they are not interfering */
+.card-div, .div-insure_info, .placeholder, p.insure_info {
+    display: none;
+}
+
+
+/* --- Font handling for Saysettha OT --- */
+@font-face {
+    font-family: 'Saysettha OT';
+    src: url("{{ request.build_absolute_uri }}{% static 'fonts/lao/Saysettha-OT.woff' %}") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Saysettha OT';
+    src: url("{{ request.build_absolute_uri }}{% static 'fonts/lao/Saysettha-OT-Bold.woff' %}") format('woff');
+    font-weight: bold;
+    font-style: normal;
+}

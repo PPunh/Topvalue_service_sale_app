@@ -14,16 +14,6 @@ hr{
     padding: 3px;
     margin: 3px;
 }
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-table tr th,
-table tr td {
-    padding: 3px !important;
-    margin: 3px !important;
-    font-size: 12px;
-}
 
 .page {
     width: 210mm;
@@ -88,4 +78,10 @@ footer, p{
     .page:last-child {
         page-break-after: auto;
     }
+}
+.float-btn{
+    z-index: 999;
+    position: fixed;
+    right: 5%;
+    bottom: 20px;
 }

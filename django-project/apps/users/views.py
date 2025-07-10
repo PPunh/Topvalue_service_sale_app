@@ -18,6 +18,7 @@ from django.conf import settings
 
 from . import forms
 from . import models
+from .forms import CustomerUserForm
 
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,7 @@ class Login(LoginView):
     # redirect to page when login successful
     def get_success_url(self):
         messages.success(self.request, "ເຂົ້າສູ່ລະບົບສຳເລັດ")
-        return reverse_lazy('users:home')
+        return reverse_lazy('app_quotations:home')
 
     def form_invalid(self, form):
         messages.error(self.request, "ລະຫັດຜູ້ໄຊ້ / ອີເມວ / ເບີໂທ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ")
@@ -55,6 +56,27 @@ def logout_view(request):
     logout(request)
     messages.success(request, "ທ່ານຳໄດ້ອອກຈາກລະບົບສຳເລັດ")
     return redirect('users:login')
+
+@login_required
+@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
+def create_user(request):
+    if request.method == 'POST':
+        form = CustomerUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'ສ້າງຊື່ຜູ້ໃຊ້ແລະລະຫັດຜ່ານສຳເລັດ')
+            return redirect('app_employies:add')
+        else:
+            messages.error(request, 'ສ້າງບັນຊີພະນັກງານລົ້ມເຫລວ')
+            print(f"add user and password form error: {form.errors}")
+    else:
+        form = CustomerUserForm()
+    template = 'create_user.html'
+    context = {
+        'title':'ສ້າງບັນຊິພະນັກງານ',
+        'form':form
+    }
+    return render(request, template, context)
 
 
 @login_required

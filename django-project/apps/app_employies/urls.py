@@ -9,13 +9,14 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 # Namespace for URLs in this users app
-app_name = 'app_customers'
+app_name = 'app_employies'
 router = DefaultRouter()
 # router.register('', views.ViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.home, name='home'),
+    path('add/', views.add, name='add'),
 ]
 
 # when user go to path /app_name/ it will show api root page (endpoints list)

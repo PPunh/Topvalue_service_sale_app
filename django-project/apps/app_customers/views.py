@@ -10,8 +10,6 @@ from django.conf import settings
 #Model
 from .models import CustomersModel
 
-#Form
-from .forms import CustomersModelForm
 
 #Function Views Here
 #Home Page of App Customers
@@ -25,25 +23,3 @@ def home(request):
     }
     template = 'app_customers/home.html'
     return render(request, template, context)
-
-#Add Customers of App Customers
-@login_required
-@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
-def add_customer (request):
-    if request.method == 'POST':
-        add_customer_form = CustomersModelForm(request.POST)
-        if add_customer_form.is_valid():
-            add_customer_form.save()
-            messages.success(request, 'ສ້າງໃບສະເຫນີລາຄາໃຫມ່ ສຳເລັດ')
-            return redirect('app_customers:home')
-        else:
-            messages.error(request, 'ສ້າງໃບສະເຫນີລາຄາບໍ່ສຳເລັດ')
-            print(f"add_customers_form {add_customer_form.errors}")
-    else:
-        add_customer_form = CustomersModelForm()
-    template = 'app_customers/add_customer.html'
-    context = {
-        'title': 'ສ້າງລາຍການລູກຄ້າໃຫມ່',
-        'add_customer_form':add_customer_form
-    }
-    return render (request, template, context)

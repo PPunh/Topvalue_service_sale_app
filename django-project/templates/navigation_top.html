@@ -72,7 +72,6 @@
         </button>
         <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-white w3-border">
           <a href="{% url 'app_customers:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ລູກຄ້າທັງຫມົດ</a>
-          <a href="{% url 'app_customers:add_customer' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ສ້າງໃຫມ່</a>
           <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ບົດລາຍງານ</a>
         </div>
       </div>
@@ -86,6 +85,7 @@
           <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ຂໍ້ມູນບຸກຄົນ</a>
           <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ການຕັ້ງຄ່າ</a>
           <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ປ່ຽນລະຫັດຜ່ານ</a>
+          <a href="{% url 'app_employies:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white w3-hover-to-right">ຈັດການບັນຊີ</a>
         </div>
       </div>
 
@@ -110,7 +110,7 @@
     </button>
     <div id="qDropdown" class="w3-hide w3-white w3-card-4 w3-border">
       <a href="{% url 'app_quotations:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ໃບສະເຫນີລາຄາທີ່ໄດ້ຂາຍ</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ອອກໃບສະເຫນີລາຄາໃຫມ່</a>
+      <a href="{% url 'app_quotations:create_quotation' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ອອກໃບສະເຫນີລາຄາໃຫມ່</a>
     </div>
   </div>
 
@@ -172,6 +172,7 @@
       <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ຂໍ້ມູນບຸກຄົນ</a>
       <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ການຕັ້ງຄ່າ</a>
       <a href="#" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ປ່ຽນລະຫັດຜ່ານ</a>
+      <a href="{% url 'app_employies:home' %}" class="w3-bar-item w3-button w3-hover-deep-orange w3-hover-text-white">ຈັດການບັນຊີ</a>
     </div>
   </div>
 

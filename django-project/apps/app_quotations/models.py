@@ -7,7 +7,7 @@ from decimal import Decimal
 
 #====================================== Import Models ======================================
 from apps.app_customers.models import CustomersModel
-
+from apps.app_employies.models import EmployiesModel
 #====================================== Quotations PREFIX ======================================
 PREFIX = 'QUO'
 
@@ -35,7 +35,7 @@ class QuotationInformationModel(models.Model):
     expired_date = models.DateField()
     # Use QuotationStatus.choices and QuotationStatus.SENDED
     status = models.CharField(max_length=20, choices=QuotationStatus.choices, default=QuotationStatus.SENDED)
-    
+    create_by = models.ForeignKey('app_employies.EmployiesModel', on_delete=models.SET_NULL, related_name='quotation', null=True, blank=True, default=None)
     total_all_products = models.DecimalField(max_digits=20, decimal_places=2, editable=False, blank=True, null=True)
     
     class Meta:

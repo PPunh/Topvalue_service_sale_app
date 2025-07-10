@@ -53,7 +53,7 @@
                     <td class="w3-border" style="text-align: center;">{{quotation.expired_date|date:"d/m/Y"}}</td>
                     <td class="w3-border">
                         <a href="{% url 'app_quotations:quotation_details' quotation.quotation_id %}" class="w3-button w3-round-large w3-hover-shadow w3-green w3-hover-blue w3-padding-small w3-margin-small" style="width: 80px;">ລາຍລະອຽດ</a>
-                        <a href="#" class="w3-button w3-round-large w3-hover-shadow w3-red w3-hover-deep-orange w3-padding-small w3-margin-small" style="width: 80px;">ລືບ</a>
+                        <a href="{% url 'app_quotations:delete_quotation' quotation.quotation_id %}" class="w3-button w3-round-large w3-hover-shadow w3-red w3-hover-deep-orange w3-padding-small w3-margin-small" style="width: 80px;">ລືບ</a>
                     </td>
                 </tr>
             {% empty %}

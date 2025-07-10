@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block main-content %}
+    <div class="w3-container" style="margin-top: 100px;">
+       <div class="w3-container w3-animate-left">
+            <h1 class="lao-noto">{{title}}</h1>
+            <a href="{% url 'users:create_user' %}" class="w3-margin w3-button w3-blue w3-hover-red w3-round-xlarge w3-hover-shadow w3-right" >ສ້າງບັນຊີພະນັກງານໃຫມ່</a>
+            <table class="w3-table w3-hoverable w3-striped w3-bordered">
+                <tr>
+                    <th class="w3-blue w3-padding">ລຳດັບ</th>
+                    <th class="w3-blue w3-padding">ລະຫັດພະນັກງານ</th>
+                    <th class="w3-blue w3-padding">ຊື</th>
+                    <th class="w3-blue w3-padding">ນາມສະກຸນ</th>
+                    <th class="w3-blue w3-padding">ພະແນກ</th>
+                    <th class="w3-blue w3-padding">ເບີໂທ</th>
+                    <th class="w3-blue w3-padding">ອີເມວ</th>
+                    <th class="w3-blue w3-padding">ສ້າງວັນທີ່</th>
+                </tr>
+                {% for emp in all_employies %}
+                    <tr>
+                        <td class="w3-padding">{{forloop.counter}}</td>
+                        <td class="w3-padding">{{emp.employies_id}}</td>
+                        <td class="w3-padding">{{emp.employies_name}}</td>
+                        <td class="w3-padding">{{emp.employies_lastname}}</td>
+                        <td class="w3-padding">{{emp.department}}</td>
+                        <td class="w3-padding">{{emp.user.phone_number}}</td>
+                        <td class="w3-padding">{{emp.user.email}}</td>
+                        <td class="w3-padding">{{emp.create_date|date:"d/m/Y" }}</td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="w3-red w3-text-white w3-padding">ບໍມີຂໍ້ມູນໃດໆ</td>
+                    </tr>
+                {% endfor %}
+            </table>
+    </div>
+{% endblock %}
