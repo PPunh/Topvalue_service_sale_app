@@ -23,3 +23,15 @@ def home(request):
     }
     template = 'app_customers/home.html'
     return render(request, template, context)
+
+
+@login_required
+@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
+def customer_details(request, customer_id):
+    one_customer = get_object_or_404(CustomersModel, customer_id=customer_id)
+    template = 'app_customers/customer_details.html'
+    context = {
+        'title':'ລາຍລະອຽດຂອງລູກຄ້າ',
+        'one_customer':one_customer
+    }
+    return render(request, template, context)

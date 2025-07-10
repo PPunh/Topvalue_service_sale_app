@@ -14,8 +14,10 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 import tempfile
 from django.contrib.staticfiles import finders
-
 from django.forms import inlineformset_factory
+
+#Query
+from django.db.models import Q
 
 #Model and form
 from .forms import QuotationInformationModelForm, CustomersModelForm, QuotationItemsFormSet, AdditionalExpensesFormSet
@@ -28,7 +30,13 @@ from apps.app_employies.models import EmployiesModel
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
 def home(request):
+    query = request.GET.get("q", "")
     all_quotations = QuotationInformationModel.objects.all().order_by('expired_date')
+    if query:
+        all_quotations = all_quotations.filter(
+            Q(quotation_id__icontains = query) |
+            Q(customer__company_name__icontains=query)
+        )
     template = 'app_quotations/home.html'
     context = {
         'title':'ລາຍການໃບສະເຫນີລາຄາ',
@@ -93,7 +101,7 @@ def create_quotation_with_customer(request, quotation_id=None):
     return render (request, 'app_quotations/create_quotation.html', context)
 
 
-#====================================== Quotations Details ======================================
+#====================================== Delete Quotations ======================================
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
 def delete_quotation(request, quotation_id):
@@ -130,6 +138,7 @@ def quotation_details(request, quotation_id):
     }
 
     return render(request, 'app_quotations/quotation_details.html', context)
+
 
 #====================================== Quotations Generator ======================================
 @login_required

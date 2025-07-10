@@ -16,6 +16,7 @@
                     <th class="w3-blue w3-padding">ເບີໂທ</th>
                     <th class="w3-blue w3-padding">ອີເມວ</th>
                     <th class="w3-blue w3-padding">ສ້າງວັນທີ່</th>
+                    <th class="w3-blue w3-padding"></th>
                 </tr>
                 {% for customer in customers %}
                     <tr>
@@ -26,6 +27,10 @@
                         <td class="w3-padding">{{customer.phone_number}}</td>
                         <td class="w3-padding">{{customer.email}}</td>
                         <td class="w3-padding">{{customer.create_at|date:"d/m/Y"}}</td>
+                        <td class="w3-padding w3-right">
+                            <a href="{% url 'app_customers:customer_details' customer.customer_id %}" class="w3-button w3-round w3-green w3-hover-shadow w3-hover-dark" style="width:100px;">ລາຍລະອຽດ</a>
+                            <a href="#" class="w3-button w3-round w3-red w3-hover-shadow w3-hover-black" style="width:100px;">ລຶບ</a>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>

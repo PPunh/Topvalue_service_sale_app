@@ -7,6 +7,17 @@
  <div class="w3-container" style="margin-top: 70px;">
        <div class="w3-container w3-animate-left">
         <h1 class="lao-noto">{{title}}</h1>
+        <form class="w3-container w3-padding w3-margin-top" method="get" action="{% url 'app_quotations:home' %}">
+            <div class="w3-row w3-card w3-round w3-white w3-padding-small w3-border">
+                <div class="w3-col s10">
+                    <input type="text" name="q" value="{{query}}" class="w3-input w3-border-0" placeholder="ຄົ້ນຫາດ້ວຍເລກໃບສະເຫນີລາຄາ ແລະ ຊືບໍລິສັດ"/>
+                </div>
+                <div class="w3-col s2">
+                    <button type="submit" class="w3-button w3-blue w3-round w3-hover-green w3-block">
+                        <i class="fa fa-search"></i> ຄົ້ນຫາ </button>
+                </div>
+            </div>
+        </form>
         <table class="w3-table w3-hoverable w3-striped w3-bordered">
             <tr class="w3-blue-dark-light w3-padding">
                 <th class="w3-border" style="text-align: center; width: 5%;">ລຳດັບ</th>
