@@ -10,7 +10,8 @@
     <div class="w3-margin-bottom w3-padding-small">
         <h2 class="lao-noto w3-text-blue-light">{{ title }} {{ one_quotation.quotation_id }}</h2>
         <div class="w3-right w3-animate-right">
-            <a href="{% url 'app_quotations:generate_quotation_form' one_quotation.quotation_id %}" class="w3-button w3-animate-right w3-blue w3-hover-shadow w3-round-xlarge w3-hover-green">ເບິງໃບສະເຫນີລາຄາ ແລະ ດາວໂຫລດ</a>
+            <a href="{% url 'app_quotations:edit_quotation' one_quotation.quotation_id %}" class="w3-button w3-animate-right w3-green w3-hover-shadow w3-round-xlarge w3-hover-deep-orange">ແກ້ໄຂ</a>
+            <a href="{% url 'app_quotations:generate_quotation_form' one_quotation.quotation_id %}" class="w3-button w3-animate-right w3-blue w3-hover-shadow w3-round-xlarge w3-hover-deep-orange">ເບິງໃບສະເຫນີລາຄາ ແລະ ດາວໂຫລດ</a>
             <a href="{% url 'app_quotations:home' %}" class="w3-button w3-animate-right w3-red w3-hover-shadow w3-round-xlarge w3-hover-deep-orange">ອອກຈາກຫນ້ານີ້</a>
         </div>
         <p class="w3-text-gray">

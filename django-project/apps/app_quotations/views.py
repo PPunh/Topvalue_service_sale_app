@@ -1,48 +1,69 @@
 # coding=utf-8
-import re
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from django.contrib import messages
-from django.db import transaction
 
-#Login Request and rate_limit
-from django_ratelimit.decorators import ratelimit
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
-#PDF
-from django.template.loader import render_to_string
-from weasyprint import HTML
+#=====[ Built-in / Standard Library ]=====
+import re
 import tempfile
+
+#=====[ Django Core Imports ]=====
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.staticfiles import finders
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, DetailView
+
+#=====[ Third-party Packages ]=====
+from django_ratelimit.decorators import ratelimit
+from weasyprint import HTML
+
+#=====[ Django Forms & Formsets ]=====
 from django.forms import inlineformset_factory
 
-#Query
-from django.db.models import Q
+#=====[ Local App Imports: Forms ]=====
+from .forms import (
+    QuotationInformationModelForm,
+    CustomersModelForm,
+    QuotationItemsFormSet,
+    AdditionalExpensesFormSet
+)
 
-#Model and form
-from .forms import QuotationInformationModelForm, CustomersModelForm, QuotationItemsFormSet, AdditionalExpensesFormSet
+#=====[ Local App Imports: Models ]=====
 from .models import QuotationInformationModel, QuotationItemsModel, AdditionalExpenses
 from apps.app_customers.models import CustomersModel
 from apps.app_employies.models import EmployiesModel
 
+
 #Function Views Here
 #====================================== Home page and list of all quotations ======================================
-@login_required
-@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
-def home(request):
-    query = request.GET.get("q", "")
-    all_quotations = QuotationInformationModel.objects.all().order_by('expired_date')
-    if query:
-        all_quotations = all_quotations.filter(
-            Q(quotation_id__icontains = query) |
-            Q(customer__company_name__icontains=query)
-        )
-    template = 'app_quotations/home.html'
-    context = {
-        'title':'ລາຍການໃບສະເຫນີລາຄາ',
-        'all_quotations':all_quotations
-    }
-    return render(request, template, context)
+@method_decorator(ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True), name='dispatch')
+class HomeView(LoginRequiredMixin, ListView):
+    login_url = 'users:login'
+    model = QuotationInformationModel
+    template_name = 'app_quotations/home.html'
+    context_object_name = 'all_quotations'
+
+    #Search / Filter Function
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search = self.request.GET.get('search', '')
+        if search:
+            queryset = queryset.filter(
+                quotation_id__icontains = search
+            ) | queryset.filter(
+                customer__company_name__icontains = search
+            )
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+        context['title'] = 'ລາຍການໃບສະເຫນີລາຄາ'
+        return context
 
 
 
@@ -73,11 +94,14 @@ def create_quotation_with_customer(request, quotation_id=None):
 
                 #2 Set customer and quotation and save quotation
                 quotation = form.save(commit=False)
-                try:
-                    employies = EmployiesModel.objects.get(user=request.user)
-                    quotation.create_by = employies
-                except EmployiesModel.DoesNotExist:
-                    return redirect('app_quotations:create_quotation')
+                if not quotation.create_by:
+                    try:
+                        employies = EmployiesModel.objects.get(user=request.user)
+                        quotation.create_by = employies
+                    except EmployiesModel.DoesNotExist:
+                        # return redirect('app_quotations:create_quotation')
+                        pass
+                    
                 quotation.customer = customer
                 quotation.save()
 
@@ -88,10 +112,14 @@ def create_quotation_with_customer(request, quotation_id=None):
                 if additional_expenses_formset.has_changed() or hasattr(quotation, 'additional_expenses'):
                     additional_expenses_formset.instance = quotation
                     additional_expenses_formset.save()
-                messages.success(request, 'ອອກໃບສະເຫນີລາຄາໃຫມ່ ສຳເລັດ')
+                if quotation_instance:
+                    messages.success(request, 'ແກ້ໄຂໃບສະເຫນີລາຄາ ແລະ ລູກຄ້າ ສຳເລັດ')
+                else:
+                    messages.success(request, 'ອອກໃບສະເຫນີລາຄາໃຫມ່ ສຳເລັດ')
+
                 return redirect('app_quotations:quotation_details', quotation_id=quotation.quotation_id)
     context = {
-        'title':'ອອກໃບສະເຫນີລາຄາໃຫມ່',
+        'title': 'ແກ້ໄຂໃບສະເຫນີລາຄາ' if quotation_instance else 'ອອກໃບສະເຫນີລາຄາໃຫມ່',
         'form': form,
         'customer_form': customer_form,
         'item_formset': item_formset,

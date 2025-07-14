@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block main-content %}
+    <div class="w3-container" style="margin-top: 100px;">
+       <div class="w3-container w3-animate-left">
+            <h1 class="lao-noto">{{title}}</h1>
+            <form class="w3-container w3-padding w3-margin-top" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="w3-button w3-blue w3-round w3-hover-green">ລືບ</button>
+                <a href="{% url 'app_customers:home' %}" type="submit" class="w3-button w3-blue w3-round w3-hover-green">ຍົກເລີກ</a>
+        </div>
+    </div>
+{% endblock %}

@@ -15,8 +15,9 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('', views.home, name='home'),
-    path('customer_details/<str:customer_id>/', views.customer_details, name="customer_details"),
+    path('', views.HomeView.as_view(), name='home'),
+    path('customer/<str:customer_id>/', views.CustomerDetailsView.as_view(), name='customer_details'),
+    path('delete/<str:customer_id>/', views.CustomersDeleteView.as_view(), name='delete'),
 ]
 
 # when user go to path /app_name/ it will show api root page (endpoints list)

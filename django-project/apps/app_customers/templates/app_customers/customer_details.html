@@ -6,7 +6,16 @@
 {% block main-content %}
     <div class="w3-container" style="margin-top: 100px;">
        <div class="w3-container w3-animate-left">
-            <h1 class="lao-noto">ລາຍລະອຽດຂອງລູກຄ້າ</h1>
+            <h1 class="lao-noto">{{title}}</h1>
+            <p><strong>ລະຫັດລູກຄ້າ:</strong> {{ customer.customer_id }}</p>
+            <p><strong>ຊືບໍລິສັດ:</strong> {{ customer.company_name }}</p>
+            <p><strong>ຜູ້ຕິດຕໍ່:</strong> {{ customer.contact_person_name }}</p>
+            <p><strong>ເບີໂທລະສັບ:</strong> {{ customer.phone_number }}</p>
+            <p><strong>ອີເມວ:</strong> {{ customer.email }}</p>
+            <p><strong>ທີ່ຢູ່:</strong> {{ customer.company_address }}</p>
+            <p><strong>ວັນທີ່ສ້າງ:</strong> {{ customer.create_at|date:"d/m/Y" }}</p>
+
+            <a href="{% url 'app_customers:home' %}">ກັບຄືນ</a>
         </div>
     </div>
 {% endblock %}

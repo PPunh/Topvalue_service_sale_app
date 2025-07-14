@@ -7,6 +7,17 @@
     <div class="w3-container" style="margin-top: 100px;">
        <div class="w3-container w3-animate-left">
             <h1 class="lao-noto">ລາຍການລູກຄ້າ</h1>
+            <form class="w3-container w3-padding w3-margin-top" method="get" action="{% url 'app_customers:home' %}">
+                <div class="w3-row w3-card w3-round w3-white w3-padding-small w3-border">
+                    <div class="w3-col s10">
+                        <input type="text" name="search" value="{{search}}" class="w3-input w3-border-0" placeholder="ຄົ້ນຫາດ້ວຍເລກລະຫັດລູກຄ້າ ແລະ ຊືບໍລິສັດ"/>
+                    </div>
+                    <div class="w3-col s2">
+                        <button type="submit" class="w3-button w3-blue w3-round w3-hover-green w3-block">
+                            <i class="fa fa-search"></i> ຄົ້ນຫາ </button>
+                    </div>
+                </div>
+            </form>
             <table class="w3-table w3-hoverable w3-striped w3-bordered">
                 <tr>
                     <th class="w3-blue w3-padding">ລຳດັບ</th>
@@ -29,7 +40,7 @@
                         <td class="w3-padding">{{customer.create_at|date:"d/m/Y"}}</td>
                         <td class="w3-padding w3-right">
                             <a href="{% url 'app_customers:customer_details' customer.customer_id %}" class="w3-button w3-round w3-green w3-hover-shadow w3-hover-dark" style="width:100px;">ລາຍລະອຽດ</a>
-                            <a href="#" class="w3-button w3-round w3-red w3-hover-shadow w3-hover-black" style="width:100px;">ລຶບ</a>
+                            <a href="{% url 'app_customers:delete' customer.customer_id %}" class="w3-button w3-round w3-red w3-hover-shadow w3-hover-black" style="width:100px;">ລຶບ</a>
                         </td>
                     </tr>
                 {% empty %}
@@ -38,5 +49,6 @@
                     </tr>
                 {% endfor %}
             </table>
+        </div>
     </div>
 {% endblock %}
