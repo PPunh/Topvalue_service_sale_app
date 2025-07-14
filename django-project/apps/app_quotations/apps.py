@@ -5,5 +5,5 @@ from django.apps import AppConfig
 class AppQuotationsSmallConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = 'apps.app_quotations'
-    verbose_name = 'Application make the quotations'
+    verbose_name = 'ການຈັດການໃບວະເຫນີລາຄາ'
     label = 'app_quotations'

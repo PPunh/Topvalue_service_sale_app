@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'apps.app_customers',
     'apps.app_quotations',
     'apps.app_employies',
+    'apps.app_invoices', # this app is for invoices, it is a boilerplate app
 ]
 
 AUTH_USER_MODEL = 'users.User'

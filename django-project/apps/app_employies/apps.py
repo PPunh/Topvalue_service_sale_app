@@ -5,5 +5,5 @@ from django.apps import AppConfig
 class AppEmployiesConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = 'apps.app_employies'
-    verbose_name = 'Application Boilerplate for Small App'
+    verbose_name = 'ຈັດການພະນັກງານ'
     label = 'app_employies'

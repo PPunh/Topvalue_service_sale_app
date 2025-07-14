@@ -5,5 +5,5 @@ from django.apps import AppConfig
 class AppCustomersConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = 'apps.app_customers'
-    verbose_name = 'Application for Customers Imformation'
+    verbose_name = 'ການຈັດການລູກຄ້າ'
     label = 'app_customers'
