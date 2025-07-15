@@ -11,8 +11,8 @@ services:
       TZ: Asia/Vientiane # set default env time zone to UTC +7
       PGTZ: Asia/Vientiane # set postgres time zone to UTC +7
     volumes:
-#      - postgres_data:/var/lib/postgresql/data # Persist data (important!)
-      - ./db/postgres_data:/var/lib/postgresql/data
+      # - postgres_data:/var/lib/postgresql/data # Persist data (important!)
+      - ./db/postgres_data:/var/lib/postgresql/data # Uncomment to use local directory for data
     restart: always # Restart the database if it crashes
     networks:  # Add the database to the inter-container network
       - internal-network
