@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block main-content %}
+<div class="w3-container" style="margin-top: 100px;">
+    <div class="w3-container w3-animate-left w3-cell-row">
+        <h1 class="lao-noto">{{ title }}</h1>
+
+        <div class="w3-card w3-white w3-round-large w3-padding">
+            <h2 class="w3-center w3-text-blue lao-noto">ລາຍລະອຽດພະນັກງານ</h2>
+
+            <div class="w3-row-padding">
+
+                <!-- Left Column -->
+                <div class="w3-col m6">
+                    <div class="w3-section w3-border w3-border-dark w3-round-large w3-padding">
+                        <label class="w3-text-grey">ຊື່</label>
+                        <p class="w3-large">{{ one_employee.employies_name }}</p>
+                    </div>
+
+                    <div class="w3-section w3-border w3-border-dark w3-round-large w3-padding">
+                        <label class="w3-text-grey">ນາມສະກຸນ</label>
+                        <p class="w3-large">{{ one_employee.employies_lastname }}</p>
+                    </div>
+
+                    <div class="w3-section w3-border w3-border-dark w3-round-large w3-padding">
+                        <label class="w3-text-grey">ພະແນກ</label>
+                        <p class="w3-large">{{ one_employee.department }}</p>
+                    </div>
+
+                    <div class="w3-section w3-border w3-border-dark w3-round-large w3-padding">
+                        <label class="w3-text-grey">ວັນທີ່ສ້າງ</label>
+                        <p class="w3-large">{{ one_employee.create_date|date:"d/m/Y" }}</p>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="w3-col m6">
+                    <div class="w3-section">
+                        <label class="w3-text-grey">ລາຍເຊັນ</label><br>
+                        {% if one_employee.signature %}
+                            <img src="{{ one_employee.signature.url }}" alt="ລາຍເຊັນ" class="w3-image" style="max-width:100%; height:auto;">
+                        {% else %}
+                            <p class="w3-text-red">ບໍ່ມີລາຍເຊັນ</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="w3-center w3-margin-top">
+                <a href="{% url 'app_employies:home' %}" class="w3-button w3-blue w3-round">ກັບຄືນ</a>
+                <a href="{% url 'app_employies:edit_emp' one_employee.employies_id %}" class="w3-button w3-red w3-round">ແກ້ໄຂ</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

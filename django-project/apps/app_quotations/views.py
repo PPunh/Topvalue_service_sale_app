@@ -37,12 +37,17 @@ from .forms import (
 from .models import QuotationInformationModel, QuotationItemsModel, AdditionalExpenses
 from apps.app_customers.models import CustomersModel
 from apps.app_employies.models import EmployiesModel
+from apps.users.mixins import RoleRequiredMixin
 
 
 #Function Views Here
 #====================================== Home page and list of all quotations ======================================
 @method_decorator(ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True), name='dispatch')
-class HomeView(LoginRequiredMixin, ListView):
+class HomeView(LoginRequiredMixin, RoleRequiredMixin, ListView):
+    allowed_user = [
+        'sale',
+        'admin',
+    ]
     login_url = 'users:login'
     model = QuotationInformationModel
     template_name = 'app_quotations/home.html'
@@ -181,7 +186,7 @@ def generate_quotation_form(request, quotation_id):
     }
     return render (request, template, context)
 
-#====================================== Quotations Generator PDF======================================
+#==================================== Quotations Generator PDF with Signature =================================
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
 def quotation_generator_pdf(request, quotation_id):
@@ -190,6 +195,21 @@ def quotation_generator_pdf(request, quotation_id):
         'generate_quotation_form': quotation,
         'quotation_id': quotation.quotation_id,
         'employies': quotation.create_by if hasattr(quotation, 'create_by') else None
+    })
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f"attachment; filename=quotation_{quotation_id}.pdf"
+    HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(response)
+    return response
+
+
+#================================ Quotations Generator PDF without Signature =================================
+@login_required
+@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
+def quotation_generator_pdf_no_sig(request, quotation_id):
+    quotation = get_object_or_404(QuotationInformationModel, quotation_id=quotation_id)
+    html_string = render_to_string('app_quotations/components/quotation_pdf_generator_no_sig.html', {
+        'generate_quotation_form': quotation,
+        'quotation_id': quotation.quotation_id,
     })
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f"attachment; filename=quotation_{quotation_id}.pdf"

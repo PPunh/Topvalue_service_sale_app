@@ -22,6 +22,7 @@ urlpatterns = [
     path('quotation_details/edit_quotation/<str:quotation_id>/', views.create_quotation_with_customer, name='edit_quotation'),
     path('quotation_details/quotation_form/<str:quotation_id>/', views.generate_quotation_form, name='generate_quotation_form'),
     path('quotation_details/quotation_form/quotation_pdf_generator/<str:quotation_id>/', views.quotation_generator_pdf, name='quotation_generator_pdf'),
+    path('quotation_details/quotation_form/quotation_generator_pdf_no_sig/<str:quotation_id>/', views.quotation_generator_pdf_no_sig, name='quotation_generator_pdf_no_sig'),
 ]
 
 # when user go to path /app_name/ it will show api root page (endpoints list)

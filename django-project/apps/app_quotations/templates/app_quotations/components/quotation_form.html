@@ -137,18 +137,19 @@
         </footer>
     </div>
 </div>
-<div class="float-btn w3-animate-right w3-animate-opacity">
-    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
-   style="width: 200px;"
-   href="{% url 'app_quotations:quotation_details' generate_quotation_form.quotation_id %}">
-    ກັບຄືນ
-</a>
-
-<a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
-   style="width: 200px;"
-   href="{% url 'app_quotations:quotation_generator_pdf' generate_quotation_form.quotation_id %}">
-    ດາວໂຫລດໃບສະເຫນີລາຄາ {{ quotation_id }}
-</a>
-   
+<div class="float-btn w3-animate-right">
+    <div class="w3-dropdown-hover w3-round-xxlarge" style="position: relative;">
+        <button class="w3-button w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"><i class="fa fa-download"></i> ດາວໂຫລດໃບສະເຫນີລາຄາ</button>
+        <div class="w3-dropdown-content w3-bar-block" style="right: 0; position: absolute; bottom: 100%; top: auto; background-color: transparent;box-shadow: none;">
+            <a href="{% url 'app_quotations:quotation_generator_pdf' generate_quotation_form.quotation_id %}" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+                <img src="{% static 'app_quotations/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
+                ດາວໂຫລດໃບສະເຫນີລາຄາ ທີ່ມີກາຈ້ຳແລະລາຍເຊັນ
+            </a>
+            <a href="{% url 'app_quotations:quotation_generator_pdf_no_sig' generate_quotation_form.quotation_id %}" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+                <img src="{% static 'app_quotations/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
+                ດາວໂຫລດໃບສະເຫນີລາຄາ ທີ່ບໍ່ມີກາຈ້ຳແລະລາຍເຊັນ
+            </a>
+        </div>
+    </div>   
 </div>
 {% endblock %}

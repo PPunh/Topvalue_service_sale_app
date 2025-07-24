@@ -8,6 +8,17 @@
        <div class="w3-container w3-animate-left">
             <h1 class="lao-noto">{{title}}</h1>
             <a href="{% url 'users:create_user' %}" class="w3-margin w3-button w3-blue w3-hover-red w3-round-xlarge w3-hover-shadow w3-right" >ສ້າງບັນຊີພະນັກງານໃຫມ່</a>
+            <form class="w3-container w3-padding w3-margin-top" method="get" action="{% url 'app_employies:home' %}">
+            <div class="w3-row w3-card w3-round w3-white w3-padding-small w3-border">
+                <div class="w3-col s10">
+                    <input type="text" name="search" value="{{search}}" class="w3-input w3-border-0" placeholder="ຄົ້ນຫາດ້ວຍຊື່, ນາມສະກຸນ ແລະ ພະແນກ ຂອງພະນັກງານ"/>
+                </div>
+                <div class="w3-col s2">
+                    <button type="submit" class="w3-button w3-blue w3-round w3-hover-green w3-block">
+                        <i class="fa fa-search"></i> ຄົ້ນຫາ </button>
+                </div>
+            </div>
+        </form>
             <table class="w3-table w3-hoverable w3-striped w3-bordered">
                 <tr>
                     <th class="w3-blue w3-padding">ລຳດັບ</th>
@@ -22,7 +33,11 @@
                 {% for emp in all_employies %}
                     <tr>
                         <td class="w3-padding">{{forloop.counter}}</td>
-                        <td class="w3-padding">{{emp.employies_id}}</td>
+                        <td class="w3-padding">
+                            <a href="{% url 'app_employies:details' emp.employies_id %}">
+                                {{emp.employies_id}}
+                            </a>
+                        </td>
                         <td class="w3-padding">{{emp.employies_name}}</td>
                         <td class="w3-padding">{{emp.employies_lastname}}</td>
                         <td class="w3-padding">{{emp.department}}</td>

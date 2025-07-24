@@ -134,7 +134,7 @@ def details(request, invoice_number):
     additional_expense = getattr(one_invoice, 'additional_expenses', None)  # related_name='additional_expenses'
 
     context = {
-        'title': 'ລາຍລະອຽດຂອງໃບສະເຫນີລາຄາ',
+        'title': 'ລາຍລະອຽດຂອງໃບເກັບເງິນ',
         'one_invoice': one_invoice,
         'invoice_items': invoice_items,
         'additional_expense': additional_expense,
@@ -153,7 +153,7 @@ def generate_invoice_form(request, invoice_number):
     generate_invoice_form = get_object_or_404(InvoiceInformationModel.objects.prefetch_related('items', 'additional_expenses'), invoice_number=invoice_number)
     template = 'app_invoices/components/invoice_form.html'
     context = {
-        'title': f'ໃບສະເຫນີລາຄາເລກທີ່{invoice_number}',
+        'title': f'ໃບເກັບເງິນເລກທີ່ {invoice_number}',
         'generate_invoice_form':generate_invoice_form,
         'employies':generate_invoice_form.create_by or None
     }

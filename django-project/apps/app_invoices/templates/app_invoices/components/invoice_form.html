@@ -16,7 +16,7 @@
         font-size: 12px;
     }
 </style>
-<div class="page w3-animate-left w3-animate-opacity" style="margin-top: 90px;">
+<div class="page w3-animate-left w3-animate-opacity" style="margin-top: 90px; display: flex;">
 
     <!-- Header logo -->
     <header style="border-bottom: 4px solid #CFE2F3; padding-bottom: 10px;">
@@ -50,8 +50,8 @@
                 <p><b>Email: </b>{{ generate_invoice_form.customer.email }}</p>
             </div>
             <div class="w3-cell w3-right" style="vertical-align: top;">
-                <p><b>Quotation_ID: </b>{{ generate_invoice_form.quotation_id }}</p>
-                <p><b>Create Date: </b>{{ generate_invoice_form.create_date|date:"d/m/Y" }}</p>
+                <p><b>Invoice Number: </b>{{ generate_invoice_form.invoice_number }}</p>
+                <p><b>Create Date: </b>{{ generate_invoice_form.created_date|date:"d/m/Y" }}</p>
                 <p><b>Expired: </b>{{ generate_invoice_form.expired_date|date:"d/m/Y" }}</p>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 <tr>
                     <td colspan="4"></td>
                     <td class="w3-border w3-text-blue" style="text-align: right;"> <b>IT Service ({{ generate_invoice_form.additional_expenses.it_service_percent }}%):</b> </td>
-                    <td class="w3-border" style="text-align: right;"><b>{{ generate_invoice_form.additional_expenses.it_sevice_output|floatformat:2|intcomma }}</b></td>
+                    <td class="w3-border" style="text-align: right;"><b>{{ generate_invoice_form.additional_expenses.it_service_output|floatformat:2|intcomma }}</b></td>
                 </tr>
             {% endif %}
             {% if generate_invoice_form.additional_expenses.vat_percent is not None %}
@@ -121,12 +121,12 @@
         <div style="margin-top: 20px; font-size: 14px; line-height: 1.6;">
             <p><b><u>Terms and Conditions:</u></b></p>
             <p><b>Payment Terms:</b> <i>* 100% Payment in Advance (PIA)</i></p>
-            <p><b>Delivery Terms & Lead-Time:</b> <i>* Within 7 days after receiving payment</i></p>
+            <p><b>Delivery Terms & Lead-fTime:</b> <i>* Within 7 days after receiving payment</i></p>
             <p><b>Warranty:</b> <i>* Based on subscription period<br>* Local support by Microsoft Cloud Engineers</i></p>
         </div>
 
         <!-- Footer Signature -->
-        <footer style="margin-top: 40px;">
+        <footer style="bottom: 5px;">
             <div class="w3-cell-row">
                 <div class="w3-cell" style="width: 50%; vertical-align: bottom; text-align: center;">
                     <p class="w3-center">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>
@@ -155,18 +155,19 @@
         </footer>
     </div>
 </div>
-<div class="float-btn w3-animate-right w3-animate-opacity">
-    <a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
-   style="width: 200px;"
-   href="#">
-    ກັບຄືນ
-</a>
-
-<a class="w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"
-   style="width: 200px;"
-   href="#">
-    ດາວໂຫລດໃບສະເຫນີລາຄາ {{ quotation_id }}
-</a>
-   
+<div class="float-btn w3-animate-right">
+    <div class="w3-dropdown-hover w3-round-xxlarge" style="position: relative;">
+        <button class="w3-button w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"><i class="fa fa-download"></i> ດາວໂຫລດໃບເກັບເງິນ</button>
+        <div class="w3-dropdown-content w3-bar-block" style="right: 0; position: absolute; bottom: 100%; top: auto; background-color: transparent;box-shadow: none;">
+            <a href="#" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+                <img src="{% static 'app_invoices/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
+                ດາວໂຫລດໃບເກັບເງິນ ທີ່ມີກາຈ້ຳແລະລາຍເຊັນ
+            </a>
+            <a href="#" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+                <img src="{% static 'app_invoices/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
+                ດາວໂຫລດໃບເກັບເງິນ ທີ່ບໍ່ມີກາຈ້ຳແລະລາຍເຊັນ
+            </a>
+        </div>
+    </div>   
 </div>
 {% endblock %}

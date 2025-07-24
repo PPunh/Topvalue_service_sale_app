@@ -51,7 +51,8 @@ INSTALLED_APPS = [
 
     # custom apps
     # usage: apps.app_name
-    'apps.users', # custom users app, extending the default built-in Django Auth
+    # 'apps.users', # custom users app, extending the default built-in Django Auth
+    'apps.users.apps.UsersConfig',
     'apps.app_customers',
     'apps.app_employies',
     'apps.app_quotations',

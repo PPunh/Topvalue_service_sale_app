@@ -15,7 +15,9 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('', views.home, name='home'),
+    path('', views.HomeView.as_view(), name='home'),
+    path('details/<uuid:pk>', views.Details.as_view(), name='details'),
+    path('details/edit/<uuid:pk>', views.EditEmpView.as_view(), name='edit_emp'),
     path('add/', views.add, name='add'),
 ]
 
