@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block main-content %}
+ <div class="w3-container" style="margin-top: 70px;">
+       <div class="w3-container w3-animate-left">
+        <h1 class="lao-noto">{{title}}</h1>
+        <form class="w3-container w3-padding w3-margin-top" method="get" action="{% url 'app_invoices:home' %}">
+            <div class="w3-row w3-card w3-round w3-white w3-padding-small w3-border">
+                <div class="w3-col s10">
+                    <input type="text" name="search" value="{{search}}" class="w3-input w3-border-0" placeholder="ຄົ້ນຫາດ້ວຍເລກໃບສະເຫນີລາຄາ ແລະ ຊືບໍລິສັດ"/>
+                </div>
+                <div class="w3-col s2">
+                    <button type="submit" class="w3-button w3-blue w3-round w3-hover-green w3-block">
+                        <i class="fa fa-search"></i> ຄົ້ນຫາ </button>
+                </div>
+            </div>
+        </form>
+        <table class="w3-table w3-hoverable w3-striped w3-bordered">
+            <tr class="w3-blue-dark-light w3-padding">
+                <th class="w3-border" style="text-align: center; width: 5%;">ລຳດັບ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ລະຫັດໃບເກັບເງິນ</th>
+                <th class="w3-border" style="text-align: center; width: 15%;">ບໍລະສັດ</th>
+                <th class="w3-border" style="text-align: center; width: 19%;">ສິນຄ້າ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ລາຄາ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ຈຳນວນ</th>
+                <th class="w3-border" style="text-align: center; width: 7%;">ໄລຍະເວລາ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ລາຄາລວມ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ວັນທີ່ຫມົດອາຍຸ</th>
+                <th class="w3-border" style="text-align: center; width: 10%;">ການຈັດການ</th>
+            </tr>
+            {% for invoice in all_invoices %}
+                <tr>
+                    <td class="w3-border">{{forloop.counter}}</td>
+                    <td class="w3-border">{{invoice.invoice_number}}</td>
+                    <td class="w3-border">{{invoice.customer.company_name}}</td>
+                    <td class="w3-border">
+                        {% for item in invoice.items.all %}
+                            {{forloop.counter}}. {{item.product_name}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: right; padding-right: 15px;">
+                        {% for item in invoice.items.all %}
+                            {{item.price}} USD <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">
+                        {% for item in invoice.items.all %}
+                            {{item.qty}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">
+                        {% for item in invoice.items.all %}
+                            {{item.period}} <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: right; padding-right: 15px;">
+                        {% for item in invoice.items.all %}
+                            {{item.total_one_product |intcomma}} USD <br>
+                        {% endfor %}
+                    </td>
+                    <td class="w3-border" style="text-align: center;">{{invoice.expired_date|date:"d/m/Y"}}</td>
+                    <td class="w3-border">
+                        <a href="{% url 'app_invoices:details' invoice.invoice_number %}" class="w3-button w3-round-large w3-hover-shadow w3-green w3-hover-blue w3-padding-small w3-margin-small" style="width: 80px;">ລາຍລະອຽດ</a>
+                        <a href="{% url 'app_invoices:delete' invoice.invoice_number %}" class="w3-button w3-round-large w3-hover-shadow w3-red w3-hover-deep-orange w3-padding-small w3-margin-small" style="width: 80px;">ລືບ</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10" class="w3-red w3-text-white w3-padding">ບໍມີຂໍ້ມູນໃດໆ</td>
+                </tr>
+            {% endfor %}
+        </table>
+</div>
+{% endblock %}

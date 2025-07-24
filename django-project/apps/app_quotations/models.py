@@ -45,7 +45,7 @@ class QuotationInformationModel(models.Model):
 
     def __str__(self):
         # Good for admin, maybe make it more user-friendly for general display
-        return f"ໃບສະເຫນີລາຄາເລກທີ່:{self.quotation_id} - ລູກຄ້າ: {self.customer.company_name} - ວັນທີ່ອອກ: {self.create_date} - ບໍລິສັດ: {self.customer.company_name}"
+        return f"ໃບສະເຫນີລາຄາເລກທີ່:{self.quotation_id} - ລູກຄ້າ: {self.customer.contact_person_name} - ວັນທີ່ອອກ: {self.create_date} - ບໍລິສັດ: {self.customer.company_name}"
 
     #=========== Calculate and Update value of all sum ================
     def calculate_total_all_products(self):

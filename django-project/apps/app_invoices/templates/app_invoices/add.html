@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block main-content %}
+<div class="w3-container w3-animate-left" style="margin-top: 100px;">
+
+    {% if quotation_instance %}
+        <h2 class="w3-text-blue lao-noto"> ແກ້ໄຂໃບເກັບເງິນ </h2>
+    {% else %}
+        <h2 class="w3-text-blue lao-noto"> ສ້າງໃບເກັບເງິນ </h2>
+    {% endif %}
+    
+    <form method="post" class="w3-container w3-light-grey w3-text-blue w3-margin-top">
+        {% csrf_token %}
+
+        <!-- ======================== Quotation Main Form ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຂໍ້ມູນໃບເກັບເງິນ</h3>
+            <div class="w3-row-padding">
+                {% for field in form.visible_fields %}
+                    <div class="w3-col l3 m6 s12 w3-padding">
+                        <label class="w3-text-dark">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="w3-text-red">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ======================== Customer Form ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຂໍ້ມູນລູກຄ້າ</h3>
+            <div class="w3-row-padding">
+                {% for field in customer_form.visible_fields %}
+                    <div class="w3-col l3 m6 s12 w3-padding">
+                        <label class="w3-text-dark">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="w3-text-red">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ======================== Quotation Items Formset ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ລາຍການສິນຄ້າ</h3>
+            {{ item_formset.management_form }}
+            <div id="items-container">
+                {% for form_item in item_formset %}
+                    <div class="w3-row-padding w3-margin-bottom w3-light-blue w3-round-large w3-padding-small">
+                        {% for hidden_field in form_item.hidden_fields %}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        <div class="w3-row-padding">
+                            {% for field in form_item.visible_fields %}
+                                <div class="w3-col l3 m6 s12 w3-padding">
+                                    <label class="w3-text-dark">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="w3-text-red">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="empty-form" style="display: none;">
+                <div class="w3-row-padding w3-margin-bottom w3-light-blue w3-round-large w3-padding-small">
+                    <div class="w3-row-padding">
+                        {% for field in item_formset.empty_form.visible_fields %}
+                            <div class="w3-col l3 m6 s12 w3-padding">
+                                <label class="w3-text-dark">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="w3-button w3-blue w3-round-large" id="add-item">ເພີ່ມລາຍການ</button>
+        </div>
+
+        <!-- ======================== Additional Expenses Formset ======================== -->
+        <div class="form-section w3-padding w3-margin-bottom w3-white w3-card-2 w3-round-large">
+            <h3 class="w3-text-blue lao-noto">ຄ່າໃຊ້ຈ່າຍເພີ່ມເຕີມ</h3>
+            {{ additional_expenses_formset.management_form }}
+            {% for form_exp in additional_expenses_formset %}
+                <div class="w3-row-padding w3-light-blue w3-round-large w3-padding-small">
+                    {% for hidden_field in form_exp.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+                    <div class="w3-row-padding">
+                        {% for field in form_exp.visible_fields %}
+                            <div class="w3-col l3 m6 s12 w3-padding">
+                                <label class="w3-text-dark">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="w3-text-red">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="w3-button w3-green w3-round-large w3-margin-bottom" style="width: 350px;">ບັນທຶກ</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const addItemButton = document.getElementById('add-item');
+    const itemsContainer = document.getElementById('items-container');
+    const totalFormsInput = document.querySelector('input[name$="items-TOTAL_FORMS"]');
+    const emptyFormDiv = document.getElementById('empty-form').firstElementChild;
+
+    addItemButton.addEventListener("click", function () {
+        const formCount = parseInt(totalFormsInput.value);
+        const newForm = emptyFormDiv.cloneNode(true);
+        const regex = new RegExp('__prefix__', 'g');
+
+        newForm.innerHTML = newForm.innerHTML.replace(regex, formCount);
+        itemsContainer.appendChild(newForm);
+        totalFormsInput.value = formCount + 1;
+    });
+});
+</script>
+{% endblock %}

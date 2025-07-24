@@ -35,8 +35,9 @@ urlpatterns = [
     path('api/redocs/', SpectacularRedocView.as_view(url_name='api-schema'), name='api-redocs'),
     path('', include('apps.users.urls', namespace='users')),
     path('app_customers/', include('apps.app_customers.urls', namespace='app_customers')),
-    path('app_quotations/', include('apps.app_quotations.urls', namespace='app_quotations')),
     path('app_employies/', include('apps.app_employies.urls', namespace='app_employies')),
+    path('app_quotations/', include('apps.app_quotations.urls', namespace='app_quotations')),
+    path('app_invoices/', include('apps.app_invoices.urls', namespace='app_invoices')),
 ]
 
 '''

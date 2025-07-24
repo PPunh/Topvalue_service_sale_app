@@ -21,7 +21,7 @@ class HomeView(LoginRequiredMixin, ListView):
     template_name = 'app_customers/home.html'
     context_object_name = 'customers'
 
-    #Search / Filter Function
+    #Search / Filter Functionz
     def get_queryset(self):
         queryset = super().get_queryset()
         search = self.request.GET.get('search', '')
