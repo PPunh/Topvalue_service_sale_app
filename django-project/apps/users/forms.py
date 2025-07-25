@@ -43,15 +43,13 @@ class CustomerUserForm(UserCreationForm):
             'username',
             'email',
             'phone_number',
-            'role'
             'password1',
-            'password2',
+            'password2'
         ]
         labels = {
             'username': 'ລະຫັດຜູ້ໃຊ້',
             'email': 'ອີເມວ',
             'phone_number': 'ເບີໂທລະສັບ',
-            'role':'ສິດການເຂົ້າເຖິງ',
             'password1': 'ລະຫັດຜ່ານ',
             'password2': 'ຢືນຢັນລະຫັດຜ່ານ',
         }

@@ -35,7 +35,6 @@
             <b>Email:</b> <a href="#">sales@topvalueservice.com</a>,
             <b>Website:</b> <a href="#">www.topvalueservice.com</a>
         </p>
-
     </div>
 
     <!-- Section: Quotation Info -->
@@ -114,7 +113,7 @@
                     <td class="w3-border" style="text-align: right;"><b>{{ generate_invoice_form.additional_expenses.exchange_rate_output|intcomma }}</b></td>
                 </tr>
             {% endif %}
-            
+
         </table>
 
         <!-- Terms and Conditions -->
@@ -159,15 +158,15 @@
     <div class="w3-dropdown-hover w3-round-xxlarge" style="position: relative;">
         <button class="w3-button w3-button w3-blue w3-round-xxlarge w3-hover-shadow w3-hover-red"><i class="fa fa-download"></i> ດາວໂຫລດໃບເກັບເງິນ</button>
         <div class="w3-dropdown-content w3-bar-block" style="right: 0; position: absolute; bottom: 100%; top: auto; background-color: transparent;box-shadow: none;">
-            <a href="#" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+            <a href="{% url 'app_invoices:invoice_generate_pdf' generate_invoice_form.invoice_number %}" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
                 <img src="{% static 'app_invoices/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
                 ດາວໂຫລດໃບເກັບເງິນ ທີ່ມີກາຈ້ຳແລະລາຍເຊັນ
             </a>
-            <a href="#" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
+            <a href="{% url 'app_invoices:invoice_generate_pdf_without_sig' generate_invoice_form.invoice_number %}" class="w3-bar-item w3-button w3-blue w3-hover-text-white w3-hover-black w3-border-white w3-margin-bottom w3-round-xxlarge">
                 <img src="{% static 'app_invoices/images/icons/loader_icon.png' %}" alt="loading" style="width: 30px;" class="w3-spin">
                 ດາວໂຫລດໃບເກັບເງິນ ທີ່ບໍ່ມີກາຈ້ຳແລະລາຍເຊັນ
             </a>
         </div>
-    </div>   
+    </div>
 </div>
 {% endblock %}

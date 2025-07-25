@@ -1,7 +1,7 @@
 /* --- Global Resets for PDF --- */
 @page {
-    size: A4; 
-    margin: 1.5cm; 
+    size: A4;
+    margin: 1.5cm;
 }
 
 /* Base styles for the PDF document */
@@ -9,9 +9,9 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Saysettha OT', sans-serif;
-    font-size: 9.5pt; 
-    line-height: 1.35; 
-    color: #333; 
+    font-size: 9.5pt;
+    line-height: 1.35;
+    color: #333;
 }
 
 /* Ensure common elements are reset */
@@ -22,7 +22,7 @@ html, body {
 }
 
 /* --- Typography --- */
-h1.main-heading { 
+h1.main-heading {
     font-size: 16pt;
     color: #7F7F7F;
     margin-bottom: 8pt;
@@ -64,10 +64,10 @@ header {
     border-bottom: 2pt solid #CFE2F3;
     padding-bottom: 8pt;
     margin-bottom: 15pt;
-    display: block; 
+    display: block;
 }
 
-.header-row { 
+.header-row {
     display: table;
     width: 100%;
     table-layout: fixed;
@@ -86,12 +86,12 @@ header {
 header img {
     max-width: 150pt;
     height: auto;
-    display: inline-block; 
+    display: inline-block;
     vertical-align: middle;
 }
 
 /* Info section (To:, Quotation_ID:) */
-.info-row { 
+.info-row {
     display: table;
     width: 100% !important;
     table-layout: fixed;
@@ -108,7 +108,7 @@ header img {
 
 
 /* --- Table Styles --- */
-table { 
+table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
@@ -130,10 +130,11 @@ table tr th {
     font-weight: bold;
 }
 
-
 .align-center { text-align: center; }
 .align-right { text-align: right; }
 .align-bottom { vertical-align: bottom; }
+
+
 
 table tr:nth-last-child(1) td:nth-child(5), /* GRAND-TOTAL label */
 table tr:nth-last-child(2) td:nth-child(5), /* VAT label */
@@ -166,7 +167,7 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
 
 
 /* --- Footer specific adjustments --- */
-.footer-row { 
+.footer-row {
     display: table;
     width: 100%;
     table-layout: fixed;
@@ -201,7 +202,7 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
 }
 
 /* Adjustments for the second dotted line (TVS Representative) */
-.footer-cell .dotted-line:nth-of-type(2) { 
+.footer-cell .dotted-line:nth-of-type(2) {
     margin-top: 20pt;
     margin-bottom: 0;
 }
@@ -215,6 +216,31 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
 /* Custom CSS classes from original - Ensure they are not interfering */
 .card-div, .div-insure_info, .placeholder, p.insure_info {
     display: none;
+}
+.logo-footer-container {
+    width: 100%;
+    text-align: center;
+    margin-top: -10pt;
+}
+
+.logo-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.logo-container img {
+    display: inline-block;
+    margin: 0 10pt;
+    vertical-align: middle;
+}
+.footer-logo-25 {
+    height: 25pt;
+}
+.footer-logo-10 {
+    height: 10pt;
+}
+.footer-logo-70 {
+    height: 70pt;
 }
 
 

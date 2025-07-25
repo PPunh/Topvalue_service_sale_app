@@ -3,14 +3,16 @@
         <div id="toast-message-{{ forloop.counter }}"
              class="w3-animate-right w3-padding w3-card-4 w3-round"
              style="position: fixed;
-                    bottom: {{ forloop.counter0|add:"1"|add:"1" }}em;
+                    bottom: calc(20px + {{ forloop.counter0 }} * 70px);
                     right: 20px;
                     z-index: 9999;
                     width: 400px;
                     background-color: {% if message.tags == 'error' %}#f44336
                                      {% elif message.tags == 'success' %}#4CAF50
                                      {% else %}#2196F3{% endif %};
-                    color: white;">
+                    color: white;
+                    opacity: 1;
+                    transition: bottom 0.3s ease-in-out, opacity 0.3s;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>{{ message }}</span>
                 <button class="close-message w3-button w3-hover-none w3-hover-text-red" style="background: none; border: none;">
@@ -21,17 +23,24 @@
     {% endfor %}
 
     <script>
-        // Auto-hide after 4 seconds
+        // Auto-hide with fade-out after 4 seconds
         setTimeout(function() {
             document.querySelectorAll("[id^='toast-message']").forEach(function(toast) {
-                toast.style.display = "none";
+                toast.style.opacity = "0";
+                setTimeout(() => {
+                    toast.style.display = "none";
+                }, 300); // wait for fade out before hiding
             });
         }, 4000);
 
-        // Manual close when clicking the close icon
+        // Manual close with fade-out
         document.querySelectorAll(".close-message").forEach(function(button) {
             button.addEventListener("click", function() {
-                this.closest("div[id^='toast-message']").style.display = "none";
+                const toast = this.closest("div[id^='toast-message']");
+                toast.style.opacity = "0";
+                setTimeout(() => {
+                    toast.style.display = "none";
+                }, 300);
             });
         });
     </script>

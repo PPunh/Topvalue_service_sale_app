@@ -1,9 +1,7 @@
 # coding=utf-8
-
 #=====[ Built-in / Standard Library ]=====
 import re
 import tempfile
-
 #=====[ Django Core Imports ]=====
 from django.conf import settings
 from django.contrib import messages
@@ -16,15 +14,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView
-
+from django.views.generic import ListView, DetailView, UpdateView,CreateView, FormView, TemplateView, DeleteView
 #=====[ Third-party Packages ]=====
 from django_ratelimit.decorators import ratelimit
 from weasyprint import HTML
-
 #=====[ Django Forms & Formsets ]=====
 from django.forms import inlineformset_factory
-
 #=====[ Local App Imports: Forms ]=====
 from .forms import (
     QuotationInformationModelForm,
@@ -37,17 +32,13 @@ from .forms import (
 from .models import QuotationInformationModel, QuotationItemsModel, AdditionalExpenses
 from apps.app_customers.models import CustomersModel
 from apps.app_employies.models import EmployiesModel
-from apps.users.mixins import RoleRequiredMixin
+# from apps.users.mixins import RoleRequiredMixin
 
 
 #Function Views Here
 #====================================== Home page and list of all quotations ======================================
 @method_decorator(ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True), name='dispatch')
-class HomeView(LoginRequiredMixin, RoleRequiredMixin, ListView):
-    allowed_user = [
-        'sale',
-        'admin',
-    ]
+class HomeView(LoginRequiredMixin, ListView):
     login_url = 'users:login'
     model = QuotationInformationModel
     template_name = 'app_quotations/home.html'
@@ -94,8 +85,22 @@ def create_quotation_with_customer(request, quotation_id=None):
     if request.method == 'POST':
         if form.is_valid() and customer_form.is_valid() and item_formset.is_valid() and additional_expenses_formset.is_valid():
             with transaction.atomic():
-                #1 Save Customer first
-                customer = customer_form.save()
+                cleaned_data = customer_form.cleaned_data
+                company_name = cleaned_data.get('company_name')
+                contact_person_name = cleaned_data.get('contact_person_name')
+                phone_number = cleaned_data.get('phone_number')
+                email = cleaned_data.get('email')
+                #Check customer is already in database will be not saved
+                customer = CustomersModel.objects.filter(
+                    company_name = company_name,
+                    contact_person_name = contact_person_name,
+                    phone_number = phone_number,
+                    email = email
+                ).first()
+                if not customer:
+                    customer = customer_form.save()
+                else:
+                    messages.info(request, 'ມີຂໍ້ມູນລູກຄ້ານີ້ໃນລະບົບແລ້ວ')
 
                 #2 Set customer and quotation and save quotation
                 quotation = form.save(commit=False)
@@ -104,9 +109,9 @@ def create_quotation_with_customer(request, quotation_id=None):
                         employies = EmployiesModel.objects.get(user=request.user)
                         quotation.create_by = employies
                     except EmployiesModel.DoesNotExist:
-                        # return redirect('app_quotations:create_quotation')
-                        pass
-                    
+                        messages.error(request, 'ບໍ່ພົບຂໍ້ມູນພະນັກງານ ກະລຸນາຕິດຕໍ່ຫາຜູ້ດູແລລະບົບ')
+                        return redirect('app_quotations:home')
+
                 quotation.customer = customer
                 quotation.save()
 
@@ -135,30 +140,51 @@ def create_quotation_with_customer(request, quotation_id=None):
 
 
 #====================================== Delete Quotations ======================================
-@login_required
-@ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
-def delete_quotation(request, quotation_id):
-    delete_one_quotation = get_object_or_404(QuotationInformationModel, quotation_id=quotation_id)
-    if request.method == 'POST':
-        delete_one_quotation.delete()
-        messages.success(request, 'ລຶບໃບສະເຫນີລາຄາສຳເລັດ')
-        return redirect('app_quotations:home')
-    context = {
-        'title':'ລຶບໃບສະເຫນີລາຄາ',
-        'delete_one_quotation':delete_one_quotation
-    }
-    return render(request, 'app_quotations/components/delete_quotation.html', context)
+@method_decorator(
+    ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True),
+    name = 'dispatch'
+)
+class DeleteView(LoginRequiredMixin, DeleteView):
+    login_url = 'users:login'
+    model = QuotationInformationModel
+    template_name = 'app_quotations/components/delete_quotation.html'
+    success_url = reverse_lazy('app_quotations:home')
+    slug_field = 'quotation_id'
+    slug_url_kwarg = 'quotation_id'
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(request, "ລຶບໃບສະເຫນີລາຄາສຳເລັດ")
+        return super().delete(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'ລຶບໃບສະເຫນີລາຄາ'
+        context['delete_one_quotation'] = self.get_object()
+        return context
 
 
 #====================================== Quotations Details ======================================
+# @method_decorator(
+#     ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True),
+#     name = 'dispatch'
+# )
+# class DetailView(LoginRequiredMixin, DetailView):
+#     login_url = 'users:login'
+#     model = QuotationInformationModel
+#     template_name = 'app_quotations/quotation_details.html'
+#     slug_field = 'quotation_id'
+#     slug_url_kwars = 'quotation_id'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+
+
 @login_required
 @ratelimit(key='header:X-Forwarded-For', rate=settings.RATE_LIMIT, block=True)
 def quotation_details(request, quotation_id):
     one_quotation = get_object_or_404(QuotationInformationModel, quotation_id=quotation_id)
-
     quotation_items = one_quotation.items.all()  # related_name='items'
     additional_expense = getattr(one_quotation, 'additional_expenses', None)  # related_name='additional_expenses'
-
     context = {
         'title': 'ລາຍລະອຽດຂອງໃບສະເຫນີລາຄາ',
         'one_quotation': one_quotation,
@@ -169,7 +195,6 @@ def quotation_details(request, quotation_id):
         'vat_amount': additional_expense.vat_output if additional_expense else 0,
         'grand_total': additional_expense.grandTotal if additional_expense else one_quotation.total_all_products or 0,
     }
-
     return render(request, 'app_quotations/quotation_details.html', context)
 
 

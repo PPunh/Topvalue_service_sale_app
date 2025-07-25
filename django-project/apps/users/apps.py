@@ -7,5 +7,5 @@ class UsersConfig(AppConfig):
     label = 'users'
     verbose_name = 'ບັນຊີຜູ້ໃຊ້'
 
-    def ready(self):
-        import apps.users.signals
+    # def ready(self):
+    #     import apps.users.signals

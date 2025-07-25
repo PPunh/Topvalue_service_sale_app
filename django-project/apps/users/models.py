@@ -106,14 +106,6 @@ class Profile(models.Model):
 
     # 1-to-1 relationship this Profile model to User model
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    
-    USER_ROLES = [
-        ('sale', 'Sale User'),
-        ('finance', 'Finance User'),
-        ('admin', 'Admin'),
-        ('super', 'Super User'),
-    ]
-    role = models.CharField(max_length=10, choices=USER_ROLES, default='sale')
     theme_color = models.CharField(max_length=50, choices=COLOR_CHOICES, default='w3-theme-blue.css')
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='la')
 

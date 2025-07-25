@@ -4,7 +4,7 @@ from django.db.models.signals import pre_save, post_save
 from django.db.models import Sum
 from django.dispatch import receiver
 from decimal import Decimal
-
+from datetime import date
 # Forms and Models
 from apps.app_customers.models import CustomersModel
 from apps.app_employies.models import EmployiesModel
@@ -32,7 +32,7 @@ class InvoiceInformationModel(models.Model):
         CANCELLED = 'cancelled', 'ຍົກເລີກ'
 
     invoice_number = models.CharField(max_length=20, primary_key=True)
-    customer = models.OneToOneField(
+    customer = models.ForeignKey(
         CustomersModel,
         on_delete=models.CASCADE,
         related_name='invoice_customer_information'
@@ -225,8 +225,17 @@ def update_additional_expenses_on_quotation_save(sender, instance, created, **kw
 @receiver(pre_save, sender=InvoiceInformationModel)
 def invoice_number_generator(sender, instance, **kwargs):
     if instance._state.adding and not instance.invoice_number:
+        current_year = date.today().year
+        prefix = f"{PREFIX}{current_year}"
         with transaction.atomic():
             generator, _ = InvoiceNumberGenerator.objects.select_for_update().get_or_create(pk=1)
             generator.invoice_runing_number += 1
             generator.save()
-            instance.invoice_number = f"{PREFIX}{generator.invoice_runing_number:07d}"
+            instance.invoice_number = f"{prefix}{generator.invoice_runing_number:05d}"
+
+    # if instance._state.adding and not instance.invoice_number:
+    #     with transaction.atomic():
+    #         generator, _ = InvoiceNumberGenerator.objects.select_for_update().get_or_create(pk=1)
+    #         generator.invoice_runing_number += 1
+    #         generator.save()
+    #         instance.invoice_number = f"{PREFIX}{generator.invoice_runing_number:07d}"

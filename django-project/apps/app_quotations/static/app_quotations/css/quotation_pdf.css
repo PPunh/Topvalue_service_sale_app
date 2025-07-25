@@ -1,18 +1,17 @@
 /* --- Global Resets for PDF --- */
 @page {
-    size: A4; /* กำหนดขนาดกระดาษเป็น A4 */
-    margin: 1.5cm; /* กำหนดระยะขอบของหน้ากระดาษทุกด้าน */
+    size: A4; 
+    margin: 1.5cm; 
 }
 
 /* Base styles for the PDF document */
 html, body {
     margin: 0;
     padding: 0;
-    /* กำหนด font-family หลัก (ถ้าใช้ Saysettha OT อย่าลืม @font-face) */
     font-family: 'Saysettha OT', sans-serif;
-    font-size: 9.5pt; /* ขนาดฟอนต์พื้นฐานสำหรับเอกสาร PDF */
-    line-height: 1.35; /* ปรับระยะห่างระหว่างบรรทัดให้กระชับขึ้น */
-    color: #333; /* สีตัวอักษรเริ่มต้น */
+    font-size: 9.5pt; 
+    line-height: 1.35; 
+    color: #333; 
 }
 
 /* Ensure common elements are reset */
@@ -23,7 +22,7 @@ html, body {
 }
 
 /* --- Typography --- */
-h1.main-heading { /* ใช้ class ใหม่ */
+h1.main-heading { 
     font-size: 16pt;
     color: #7F7F7F;
     margin-bottom: 8pt;
@@ -42,8 +41,8 @@ i { font-style: italic; }
 
 /* Custom text colors/styles */
 .text-red { color: red; }
-.text-blue { color: #00205F; } /* สีน้ำเงินในตาราง */
-.text-darkblue { color: #00205F; } /* สีน้ำเงินเข้มใน footer */
+.text-blue { color: #00205F; }
+.text-darkblue { color: #00205F; }
 .bold-text { font-weight: bold; }
 
 /* --- Layout and Structure --- */
@@ -54,10 +53,10 @@ i { font-style: italic; }
     display: block;
 }
 
-.content-section { /* Class ใหม่สำหรับ div.w3-container */
+.content-section {
     width: 100%;
     padding: 0;
-    margin-bottom: 10pt; /* เพิ่มระยะห่างระหว่าง section */
+    margin-bottom: 10pt;
 }
 
 /* Header layout */
@@ -65,19 +64,19 @@ header {
     border-bottom: 2pt solid #CFE2F3;
     padding-bottom: 8pt;
     margin-bottom: 15pt;
-    display: block; /* เพื่อให้ div ข้างในจัดเรียงได้ */
+    display: block; 
 }
 
-.header-row { /* Class ใหม่สำหรับ w3-cell-row ใน header */
+.header-row { 
     display: table;
     width: 100%;
     table-layout: fixed;
-    align-items: center; /* vertical-align: middle จะถูกใช้กับ table-cell */
+    align-items: center;
 }
 
-.header-cell { /* Class ใหม่สำหรับ w3-cell ใน header */
+.header-cell {
     display: table-cell;
-    vertical-align: middle; /* จัดกลางแนวตั้ง */
+    vertical-align: middle;
 }
 .header-cell.header-right {
     text-align: right;
@@ -87,19 +86,19 @@ header {
 header img {
     max-width: 150pt;
     height: auto;
-    display: inline-block; /* เพื่อให้อยู่ใน flow และจัดตำแหน่งได้ */
+    display: inline-block; 
     vertical-align: middle;
 }
 
 /* Info section (To:, Quotation_ID:) */
-.info-row { /* Class ใหม่สำหรับ w3-cell-row ใน info section */
+.info-row { 
     display: table;
     width: 100% !important;
     table-layout: fixed;
-    margin-bottom: 15pt; /* ระยะห่างระหว่างส่วนข้อมูลกับตาราง */
+    margin-bottom: 15pt;
 }
 
-.info-cell { /* Class ใหม่สำหรับ w3-cell ใน info section */
+.info-cell {
     display: table-cell;
     vertical-align: top;
 }
@@ -109,11 +108,11 @@ header img {
 
 
 /* --- Table Styles --- */
-table { /* ไม่มี class w3-table แล้ว ใช้ table selector ตรงๆ */
+table { 
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-    margin-bottom: 10pt; /* ระยะห่างด้านล่างของตาราง */
+    margin-bottom: 10pt;
 }
 
 table tr th,
@@ -131,13 +130,11 @@ table tr th {
     font-weight: bold;
 }
 
-/* Alignment classes (ใหม่) */
+
 .align-center { text-align: center; }
 .align-right { text-align: right; }
-.align-bottom { vertical-align: bottom; } /* สำหรับ footer cell */
+.align-bottom { vertical-align: bottom; }
 
-
-/* Alignment for summary rows (ใช้ class ใหม่) */
 table tr:nth-last-child(1) td:nth-child(5), /* GRAND-TOTAL label */
 table tr:nth-last-child(2) td:nth-child(5), /* VAT label */
 table tr:nth-last-child(3) td:nth-child(5), /* IT Service label */
@@ -155,7 +152,7 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
 
 
 /* --- Terms and Conditions --- */
-.terms-conditions-section { /* Class ใหม่สำหรับ div ของ Terms */
+.terms-conditions-section {
     margin-top: 15pt;
     font-size: 9pt;
     line-height: 1.4;
@@ -169,18 +166,18 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
 
 
 /* --- Footer specific adjustments --- */
-.footer-row { /* Class ใหม่สำหรับ w3-cell-row ใน footer */
+.footer-row { 
     display: table;
     width: 100%;
     table-layout: fixed;
-    margin-top: 30pt; /* ปรับ margin-top สำหรับ footer */
+    margin-top: 30pt;
 }
 
-.footer-cell { /* Class ใหม่สำหรับ w3-cell ใน footer */
+.footer-cell {
     display: table-cell;
-    vertical-align: bottom; /* จัด bottom aligned */
+    vertical-align: bottom;
     text-align: center;
-    width: 50%; /* กำหนดความกว้าง 50% ให้แต่ละ cell */
+    width: 50%;
 }
 
 .footer-cell p {
@@ -194,19 +191,19 @@ table tr:nth-last-child(4) td:nth-child(6) { /* TOTAL value */
     max-width: 180pt;
     height: auto;
     display: block;
-    margin: 0 auto 5pt auto; /* จัดกึ่งกลางและมี margin ด้านล่าง */
+    margin: 0 auto 5pt auto;
 }
 
 /* The dotted line for signature */
-.dotted-line { /* Class ใหม่สำหรับเส้นประ */
-    margin-bottom: 20pt; /* เพิ่มระยะห่างด้านล่างเส้นประ */
-    line-height: 1; /* เพื่อให้เส้นประไม่ถูกขยาย */
+.dotted-line {
+    margin-bottom: 20pt;
+    line-height: 1;
 }
 
 /* Adjustments for the second dotted line (TVS Representative) */
-.footer-cell .dotted-line:nth-of-type(2) { /* เลือกเส้นประอันที่ 2 */
+.footer-cell .dotted-line:nth-of-type(2) { 
     margin-top: 20pt;
-    margin-bottom: 0; /* ตรวจสอบว่าไม่เกิด margin ซ้อน */
+    margin-bottom: 0;
 }
 
 

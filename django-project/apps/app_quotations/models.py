@@ -30,7 +30,7 @@ class QuotationInformationModel(models.Model):
         CANCELLED = 'cancelled', 'ຍົກເລີກການຂາຍ'
 
     quotation_id = models.CharField(max_length=20, primary_key=True)
-    customer = models.OneToOneField(CustomersModel, on_delete=models.CASCADE, related_name='customer_information')
+    customer = models.ForeignKey(CustomersModel, on_delete=models.CASCADE, related_name='customer_information')
     create_date = models.DateField()
     expired_date = models.DateField()
     # Use QuotationStatus.choices and QuotationStatus.SENDED
